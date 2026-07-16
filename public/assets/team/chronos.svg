@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="64" x2="128" y2="64">
+      <stop offset="0%" stop-color="#140a08"/>
+      <stop offset="100%" stop-color="#050a14"/>
+    </linearGradient>
+    <linearGradient id="face" x1="40" y1="40" x2="90" y2="100">
+      <stop offset="0%" stop-color="#ffb347"/>
+      <stop offset="100%" stop-color="#e07a2f"/>
+    </linearGradient>
+  </defs>
+  <rect width="128" height="128" fill="url(#bg)"/>
+  <circle cx="64" cy="64" r="52" stroke="#e07a2f" stroke-width="2" opacity="0.4"/>
+  <!-- clock ring -->
+  <circle cx="64" cy="64" r="40" stroke="#ffb347" stroke-width="1.5" opacity="0.35" stroke-dasharray="4 3"/>
+  <!-- hood -->
+  <path d="M34 70c2-28 16-42 30-42s28 14 30 42c-4-12-14-20-30-20S38 58 34 70z" fill="#1a1008"/>
+  <!-- face -->
+  <ellipse cx="64" cy="72" rx="22" ry="24" fill="url(#face)" opacity="0.85"/>
+  <!-- clock eyes -->
+  <circle cx="54" cy="70" r="5" fill="#050a14" stroke="#ffb347" stroke-width="1"/>
+  <circle cx="74" cy="70" r="5" fill="#050a14" stroke="#ffb347" stroke-width="1"/>
+  <line x1="54" y1="70" x2="54" y2="66" stroke="#ffb347" stroke-width="1.5"/>
+  <line x1="74" y1="70" x2="77" y2="70" stroke="#ffb347" stroke-width="1.5"/>
+  <!-- mouth slit -->
+  <rect x="56" y="84" width="16" height="2" fill="#050a14"/>
+  <!-- collar -->
+  <path d="M38 112c8-14 16-20 26-20s18 6 26 20" fill="#140a08" stroke="#e07a2f" stroke-width="1.5"/>
+  <text x="64" y="122" text-anchor="middle" fill="#ffb347" font-family="monospace" font-size="7" letter-spacing="1">RED</text>
+</svg>

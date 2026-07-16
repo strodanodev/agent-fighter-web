@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="128" y2="128">
+      <stop offset="0%" stop-color="#08101c"/>
+      <stop offset="100%" stop-color="#050a14"/>
+    </linearGradient>
+  </defs>
+  <rect width="128" height="128" fill="url(#bg)"/>
+  <circle cx="64" cy="64" r="52" stroke="#2f8fff" stroke-width="2" opacity="0.25" stroke-dasharray="6 4"/>
+  <!-- silhouette -->
+  <ellipse cx="64" cy="54" rx="20" ry="22" fill="#0a1524" stroke="#2f8fff" stroke-width="1.5" opacity="0.7"/>
+  <path d="M36 112c8-22 16-32 28-32s20 10 28 32" fill="#0a1524" stroke="#2f8fff" stroke-width="1.5" opacity="0.7"/>
+  <!-- question -->
+  <text x="64" y="62" text-anchor="middle" fill="#6eb6ff" font-family="monospace" font-size="28" font-weight="700">?</text>
+  <!-- noise bars -->
+  <rect x="28" y="20" width="72" height="2" fill="#2f8fff" opacity="0.15"/>
+  <rect x="36" y="100" width="56" height="2" fill="#2f8fff" opacity="0.2"/>
+  <text x="64" y="122" text-anchor="middle" fill="#2f8fff" font-family="monospace" font-size="7" letter-spacing="2" opacity="0.7">TBD</text>
+</svg>

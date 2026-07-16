@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="128" x2="128" y2="0">
+      <stop offset="0%" stop-color="#061018"/>
+      <stop offset="100%" stop-color="#0c2038"/>
+    </linearGradient>
+    <linearGradient id="face" x1="40" y1="40" x2="90" y2="95">
+      <stop offset="0%" stop-color="#8eb4d8"/>
+      <stop offset="100%" stop-color="#2f8fff"/>
+    </linearGradient>
+  </defs>
+  <rect width="128" height="128" fill="url(#bg)"/>
+  <circle cx="64" cy="64" r="52" stroke="#6eb6ff" stroke-width="2" opacity="0.3"/>
+  <!-- hair spikes -->
+  <path d="M36 56 L42 28 L52 50 L64 22 L76 50 L86 28 L92 56 Z" fill="#fff" opacity="0.9"/>
+  <path d="M40 58c4-18 14-28 24-28s20 10 24 28" fill="#6eb6ff"/>
+  <!-- face -->
+  <ellipse cx="64" cy="70" rx="24" ry="28" fill="url(#face)" opacity="0.9"/>
+  <!-- eyes -->
+  <circle cx="54" cy="68" r="4" fill="#050a14"/>
+  <circle cx="74" cy="68" r="4" fill="#050a14"/>
+  <circle cx="55" cy="67" r="1.5" fill="#fff"/>
+  <circle cx="75" cy="67" r="1.5" fill="#fff"/>
+  <!-- smile -->
+  <path d="M54 82c4 6 16 6 20 0" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+  <!-- headset -->
+  <path d="M36 70c0-18 12-30 28-30s28 12 28 30" stroke="#fff" stroke-width="2.5" fill="none"/>
+  <rect x="30" y="68" width="10" height="14" rx="3" fill="#2f8fff" stroke="#fff" stroke-width="1"/>
+  <rect x="88" y="68" width="10" height="14" rx="3" fill="#2f8fff" stroke="#fff" stroke-width="1"/>
+  <!-- collar -->
+  <path d="M40 112c6-12 14-18 24-18s18 6 24 18" fill="#0a1524" stroke="#6eb6ff" stroke-width="1.5"/>
+  <text x="64" y="122" text-anchor="middle" fill="#6eb6ff" font-family="monospace" font-size="7" letter-spacing="1">COM</text>
+</svg>
