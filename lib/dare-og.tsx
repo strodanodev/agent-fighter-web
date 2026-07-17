@@ -100,7 +100,7 @@ export async function dareOgImage(code: string, taunt?: string): Promise<ImageRe
 
   // Custom taunts vary wildly in length — step the size down so satori never
   // overflows the center column.
-  const tauntSize = taunt ? (taunt.length <= 40 ? 54 : taunt.length <= 70 ? 44 : 36) : 0;
+  const tauntSize = taunt ? (taunt.length <= 40 ? 42 : taunt.length <= 70 ? 34 : 28) : 0;
 
   return new ImageResponse(
     (
@@ -116,10 +116,10 @@ export async function dareOgImage(code: string, taunt?: string): Promise<ImageRe
           color: "#ffffff",
         }}
       >
-        <div style={{ display: "flex", justifyContent: "center", paddingTop: 22 }}>
+        <div style={{ display: "flex", justifyContent: "center", paddingTop: 6 }}>
           {logo ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={logo} alt="Agent Fighter" style={{ height: 92, objectFit: "contain" }} />
+            <img src={logo} alt="Agent Fighter" style={{ height: 300, objectFit: "contain" }} />
           ) : (
             <div style={{ display: "flex", fontSize: 22, letterSpacing: 14, color: "#8eb4d8" }}>
               AGENT FIGHTER
@@ -138,8 +138,8 @@ export async function dareOgImage(code: string, taunt?: string): Promise<ImageRe
                 display: "flex",
                 alignItems: "flex-end",
                 justifyContent: "center",
-                width: 210,
-                height: 280,
+                width: 190,
+                height: 200,
                 borderRadius: 10,
                 overflow: "hidden",
                 border: "2px solid rgba(255,61,110,0.65)",
@@ -158,14 +158,14 @@ export async function dareOgImage(code: string, taunt?: string): Promise<ImageRe
                 <img
                   src={portrait}
                   alt=""
-                  style={{ maxWidth: 172, maxHeight: 258, objectFit: "contain" }}
+                  style={{ maxWidth: 154, maxHeight: 184, objectFit: "contain" }}
                 />
               ) : null}
               <div
                 style={{
-                  position: "absolute", top: 10, left: 10, display: "flex",
+                  position: "absolute", top: 8, left: 8, display: "flex",
                   backgroundColor: "#ff3d6e", color: "#2a0512",
-                  fontSize: 13, letterSpacing: 1, padding: "3px 8px", borderRadius: 3,
+                  fontSize: 11, letterSpacing: 1, padding: "2px 7px", borderRadius: 3,
                 }}
               >
                 THEM
@@ -182,7 +182,7 @@ export async function dareOgImage(code: string, taunt?: string): Promise<ImageRe
               flexDirection: "column",
               alignItems: "center",
               justifyContent: "center",
-              gap: 18,
+              gap: 12,
             }}
           >
             {taunt ? (
@@ -216,7 +216,7 @@ export async function dareOgImage(code: string, taunt?: string): Promise<ImageRe
                   style={{
                     display: "flex",
                     fontFamily: "Russo One, sans-serif",
-                    fontSize: 26,
+                    fontSize: 20,
                     color: "#ff3d6e",
                     transform: "skewX(-4deg)",
                   }}
@@ -231,7 +231,7 @@ export async function dareOgImage(code: string, taunt?: string): Promise<ImageRe
                   flexDirection: "column",
                   alignItems: "center",
                   fontFamily: "Russo One, sans-serif",
-                  fontSize: 74,
+                  fontSize: 58,
                   lineHeight: 1.04,
                   transform: "skewX(-4deg)",
                   textAlign: "center",
@@ -247,7 +247,7 @@ export async function dareOgImage(code: string, taunt?: string): Promise<ImageRe
               style={{
                 display: "flex",
                 fontFamily: "Russo One, sans-serif",
-                fontSize: 34,
+                fontSize: 26,
                 color: "#ffe566",
                 transform: "skewX(-8deg)",
               }}
@@ -266,19 +266,19 @@ export async function dareOgImage(code: string, taunt?: string): Promise<ImageRe
                 flexDirection: "column",
                 alignItems: "center",
                 justifyContent: "center",
-                gap: 6,
-                width: 210,
-                height: 280,
+                gap: 4,
+                width: 190,
+                height: 200,
                 borderRadius: 10,
                 border: "2px dashed rgba(110,182,255,0.6)",
                 backgroundImage:
                   "linear-gradient(180deg, rgba(10,21,36,0.5), rgba(6,10,20,0.65))",
               }}
             >
-              <div style={{ display: "flex", fontFamily: "Russo One, sans-serif", fontSize: 70, color: "#6eb6ff" }}>
+              <div style={{ display: "flex", fontFamily: "Russo One, sans-serif", fontSize: 52, color: "#6eb6ff" }}>
                 ?
               </div>
-              <div style={{ display: "flex", fontFamily: "Russo One, sans-serif", fontSize: 22, color: "#8eb4d8", letterSpacing: 2 }}>
+              <div style={{ display: "flex", fontFamily: "Russo One, sans-serif", fontSize: 18, color: "#8eb4d8", letterSpacing: 2 }}>
                 YOU?
               </div>
             </div>
@@ -291,11 +291,11 @@ export async function dareOgImage(code: string, taunt?: string): Promise<ImageRe
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            gap: 28,
-            padding: "22px 36px",
+            gap: 24,
+            padding: "14px 36px",
             backgroundColor: "rgba(4,8,16,0.85)",
             borderTop: "1px solid rgba(142,180,216,0.22)",
-            fontSize: 26,
+            fontSize: 21,
           }}
         >
           <div style={{ display: "flex", color: "#8eb4d8" }}>
@@ -307,9 +307,9 @@ export async function dareOgImage(code: string, taunt?: string): Promise<ImageRe
               display: "flex",
               backgroundColor: "#ffe566",
               color: "#050a14",
-              padding: "6px 18px",
+              padding: "5px 16px",
               borderRadius: 6,
-              fontSize: 24,
+              fontSize: 19,
             }}
           >
             +{REFERRAL_CREDITS} CREDITS EACH
