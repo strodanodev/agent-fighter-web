@@ -50,6 +50,31 @@ async function portraitDataUri(char: string): Promise<string | null> {
   }
 }
 
+/** The real wordmark (lib/assets.ts LOGO_FALLBACK_SRC) instead of styled text. */
+async function logoDataUri(): Promise<string | null> {
+  try {
+    const file = await readFile(
+      join(process.cwd(), "public", "assets", "logo", "main_logo_AF.png"),
+    );
+    return `data:image/png;base64,${file.toString("base64")}`;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Background texture: scanlines + a faint HUD grid layered under the two
+ * color blooms. The bloom-only version reads as a flat gradient in a chat
+ * preview thumbnail — these give it a surface to sit on.
+ */
+const BG_IMAGE = [
+  "repeating-linear-gradient(0deg, transparent 0px, transparent 2px, rgba(0,0,0,0.4) 2px, rgba(0,0,0,0.4) 4px)",
+  "repeating-linear-gradient(90deg, rgba(110,182,255,0.05) 0px, rgba(110,182,255,0.05) 1px, transparent 1px, transparent 64px)",
+  "repeating-linear-gradient(0deg, rgba(110,182,255,0.05) 0px, rgba(110,182,255,0.05) 1px, transparent 1px, transparent 64px)",
+  "radial-gradient(ellipse 60% 90% at 12% 60%, rgba(255,61,110,0.22), transparent 60%)",
+  "radial-gradient(ellipse 60% 90% at 88% 60%, rgba(47,143,255,0.26), transparent 60%)",
+].join(", ");
+
 export async function dareOgImage(code: string, taunt?: string): Promise<ImageResponse> {
   const stats = await fetchDareStats(code);
   const name = (stats?.name ?? "A FIGHTER").toUpperCase();
@@ -61,10 +86,11 @@ export async function dareOgImage(code: string, taunt?: string): Promise<ImageRe
   const char =
     stats?.mainChar && PORTRAIT_IDS.has(stats.mainChar) ? stats.mainChar : "blaze";
 
-  const [russo, chakra, portrait] = await Promise.all([
+  const [russo, chakra, portrait, logo] = await Promise.all([
     googleFont("Russo One", 400),
     googleFont("Chakra Petch", 600),
     portraitDataUri(char),
+    logoDataUri(),
   ]);
 
   const fonts = [
@@ -85,44 +111,66 @@ export async function dareOgImage(code: string, taunt?: string): Promise<ImageRe
           display: "flex",
           flexDirection: "column",
           backgroundColor: "#050a14",
-          backgroundImage:
-            "radial-gradient(ellipse 60% 90% at 12% 60%, rgba(255,61,110,0.22), transparent 60%), radial-gradient(ellipse 60% 90% at 88% 60%, rgba(47,143,255,0.26), transparent 60%)",
+          backgroundImage: BG_IMAGE,
           fontFamily: "Chakra Petch, sans-serif",
           color: "#ffffff",
         }}
       >
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            paddingTop: 36,
-            fontSize: 22,
-            letterSpacing: 14,
-            color: "#8eb4d8",
-          }}
-        >
-          AGENT FIGHTER
+        <div style={{ display: "flex", justifyContent: "center", paddingTop: 22 }}>
+          {logo ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={logo} alt="Agent Fighter" style={{ height: 92, objectFit: "contain" }} />
+          ) : (
+            <div style={{ display: "flex", fontSize: 22, letterSpacing: 14, color: "#8eb4d8" }}>
+              AGENT FIGHTER
+            </div>
+          )}
         </div>
 
-        <div style={{ flex: 1, display: "flex", alignItems: "flex-end" }}>
-          {/* red corner — their fighter */}
-          <div
-            style={{
-              width: 300,
-              height: "100%",
-              display: "flex",
-              alignItems: "flex-end",
-              justifyContent: "center",
-            }}
-          >
-            {portrait ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={portrait}
-                alt=""
-                style={{ height: 400, objectFit: "contain" }}
-              />
-            ) : null}
+        <div style={{ flex: 1, display: "flex", alignItems: "center" }}>
+          {/* red corner — their fighter, cropped to a profile thumbnail (the
+              same head-and-shoulders card crop the roster grid uses) rather
+              than a full-body cutout floating in empty space. */}
+          <div style={{ width: 300, display: "flex", justifyContent: "center" }}>
+            <div
+              style={{
+                position: "relative",
+                display: "flex",
+                alignItems: "flex-end",
+                justifyContent: "center",
+                width: 210,
+                height: 280,
+                borderRadius: 10,
+                overflow: "hidden",
+                border: "2px solid rgba(255,61,110,0.65)",
+                backgroundImage:
+                  "radial-gradient(ellipse 80% 70% at 50% 100%, rgba(255,61,110,0.16), transparent 65%), linear-gradient(180deg, rgba(20,10,16,0.9), rgba(6,10,20,0.95))",
+              }}
+            >
+              {/* contain-fit, bottom-anchored: sprite aspect ratios and
+                  action poses vary too wildly across the roster for a
+                  cover-crop headshot to reliably keep the head in frame
+                  (the game's own portrait system needs per-character
+                  authored framing to solve that — landing has no access
+                  to it, so showing the whole fighter is the safe choice). */}
+              {portrait ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={portrait}
+                  alt=""
+                  style={{ maxWidth: 172, maxHeight: 258, objectFit: "contain" }}
+                />
+              ) : null}
+              <div
+                style={{
+                  position: "absolute", top: 10, left: 10, display: "flex",
+                  backgroundColor: "#ff3d6e", color: "#2a0512",
+                  fontSize: 13, letterSpacing: 1, padding: "3px 8px", borderRadius: 3,
+                }}
+              >
+                THEM
+              </div>
+            </div>
           </div>
 
           {/* center — the accusation (or the sender's own words) */}
@@ -135,7 +183,6 @@ export async function dareOgImage(code: string, taunt?: string): Promise<ImageRe
               alignItems: "center",
               justifyContent: "center",
               gap: 18,
-              paddingTop: 30,
             }}
           >
             {taunt ? (
@@ -209,26 +256,31 @@ export async function dareOgImage(code: string, taunt?: string): Promise<ImageRe
             </div>
           </div>
 
-          {/* blue corner — the empty seat */}
-          <div
-            style={{
-              width: 300,
-              height: "100%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
+          {/* blue corner — the empty seat, same card shape as THEM so the
+              layout reads as two facing profile cards, not text floating
+              in a gradient. */}
+          <div style={{ width: 300, display: "flex", justifyContent: "center" }}>
             <div
               style={{
                 display: "flex",
-                fontFamily: "Russo One, sans-serif",
-                fontSize: 84,
-                color: "#6eb6ff",
-                transform: "skewX(-4deg)",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 6,
+                width: 210,
+                height: 280,
+                borderRadius: 10,
+                border: "2px dashed rgba(110,182,255,0.6)",
+                backgroundImage:
+                  "linear-gradient(180deg, rgba(10,21,36,0.5), rgba(6,10,20,0.65))",
               }}
             >
-              YOU?
+              <div style={{ display: "flex", fontFamily: "Russo One, sans-serif", fontSize: 70, color: "#6eb6ff" }}>
+                ?
+              </div>
+              <div style={{ display: "flex", fontFamily: "Russo One, sans-serif", fontSize: 22, color: "#8eb4d8", letterSpacing: 2 }}>
+                YOU?
+              </div>
             </div>
           </div>
         </div>
