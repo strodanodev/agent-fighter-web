@@ -89,14 +89,14 @@ export default function Featured() {
           </div>
         </div>
 
-        <div className="flex flex-col gap-3 md:flex-row md:items-stretch">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-stretch">
           {isAddAgent(active) ? (
             <AddAgentPreview />
           ) : (
             <FighterPreview fighter={active} />
           )}
 
-          <div className="grid min-w-0 flex-1 grid-cols-3 gap-1.5 sm:grid-cols-5 md:grid-cols-9">
+          <div className="grid min-w-0 flex-1 grid-cols-4 gap-1.5 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-9">
             {roster.map((f) => {
               const on = f.id === active.id;
               return (
@@ -104,7 +104,7 @@ export default function Featured() {
                   key={f.id}
                   type="button"
                   onClick={() => setActive(f)}
-                  className={`relative aspect-[3/4] overflow-hidden border-2 bg-black/40 transition ${
+                  className={`relative aspect-[3/4] overflow-hidden border-2 bg-black/70 transition ${
                     on
                       ? "border-white shadow-[0_0_14px_rgba(47,143,255,0.45)]"
                       : "border-white/10 hover:border-blue/60"
@@ -114,11 +114,11 @@ export default function Featured() {
                     src={portraitSrc(f.id)}
                     alt={f.name}
                     fill
-                    className="object-cover object-top"
+                    className="object-cover object-[center_20%] p-0.5"
                     sizes="96px"
                     unoptimized
                   />
-                  <span className="font-arcade absolute inset-x-0 bottom-0 bg-black/80 py-0.5 text-center text-[6px] text-ink">
+                  <span className="font-arcade absolute inset-x-0 bottom-0 bg-black/85 py-0.5 text-center text-[6px] text-ink">
                     {f.name}
                   </span>
                 </button>
@@ -163,17 +163,21 @@ export default function Featured() {
 
 function FighterPreview({ fighter }: { fighter: FighterCard }) {
   return (
-    <div className="arcade-panel arcade-panel-static relative h-44 w-full shrink-0 overflow-hidden sm:h-48 md:h-auto md:w-40 lg:w-44">
-      <Image
-        src={portraitSrc(fighter.id)}
-        alt={fighter.name}
-        fill
-        className="object-cover object-top"
-        sizes="176px"
-        unoptimized
-        priority
-      />
-      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black via-black/80 to-transparent p-2.5">
+    <div className="arcade-panel arcade-panel-static mx-auto flex w-full max-w-[200px] shrink-0 flex-col overflow-hidden sm:mx-0 sm:w-40 sm:max-w-none lg:w-44">
+      {/* Dedicated portrait stage — contain-fit so variable _select.png
+          aspect ratios (≈0.95–2.0) fill the frame without clipping limbs. */}
+      <div className="relative aspect-[2/3] w-full bg-[radial-gradient(ellipse_at_50%_75%,rgba(47,143,255,0.18),transparent_65%),#050810]">
+        <Image
+          src={portraitSrc(fighter.id)}
+          alt={fighter.name}
+          fill
+          className="object-contain object-center p-4"
+          sizes="(max-width:640px) 200px, 176px"
+          unoptimized
+          priority
+        />
+      </div>
+      <div className="border-t border-white/10 bg-black/90 p-2.5">
         <p className="font-arcade text-[7px] text-blue-bright">{fighter.tag}</p>
         <h3 className="font-display text-lg leading-none text-white">
           {fighter.name}
@@ -216,7 +220,7 @@ function FighterPreview({ fighter }: { fighter: FighterCard }) {
 
 function AddAgentPreview() {
   return (
-    <div className="arcade-panel relative flex w-full shrink-0 flex-col overflow-hidden border-blue-bright bg-[#0a1840] shadow-[0_0_28px_rgba(47,143,255,0.45)] md:w-56 lg:w-64">
+    <div className="arcade-panel relative mx-auto flex w-full max-w-[200px] shrink-0 flex-col overflow-hidden border-blue-bright bg-[#0a1840] shadow-[0_0_28px_rgba(47,143,255,0.45)] sm:mx-0 sm:w-48 sm:max-w-none md:w-56 lg:w-64">
       <div
         className="pointer-events-none absolute inset-0"
         style={{

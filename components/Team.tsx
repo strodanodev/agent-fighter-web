@@ -43,65 +43,87 @@ function ScrambleText({
 
 function MemberCard({ member, delay }: { member: TeamMember; delay: number }) {
   const mystery = Boolean(member.mystery);
+  const body = (
+    <div className="flex items-center gap-3.5">
+      <div
+        className={`relative h-16 w-16 shrink-0 overflow-hidden border-2 bg-black/50 ${
+          mystery
+            ? "animate-mystery-glitch border-blue/50"
+            : "border-white/20 group-hover:border-blue-bright/70"
+        }`}
+      >
+        <Image
+          src={member.avatar}
+          alt={mystery ? "Classified operative" : member.name}
+          fill
+          className={`object-cover ${mystery ? "animate-mystery-static" : ""}`}
+          sizes="64px"
+          unoptimized
+        />
+        {mystery && (
+          <div
+            className="pointer-events-none absolute inset-0 bg-[repeating-linear-gradient(0deg,transparent,transparent_2px,rgba(47,143,255,0.12)_2px,rgba(47,143,255,0.12)_4px)]"
+            aria-hidden
+          />
+        )}
+      </div>
+
+      <div className="min-w-0 flex-1">
+        {mystery ? (
+          <>
+            <h3 className="font-display text-lg leading-none text-blue-bright">
+              <ScrambleText length={5} intervalMs={70 + delay * 0.05} />
+            </h3>
+            <p className="font-arcade mt-1.5 text-[8px] text-ink-muted">
+              <ScrambleText length={6} intervalMs={95 + delay * 0.04} />
+              <span className="text-white/30"> / </span>
+              <ScrambleText length={6} intervalMs={110 + delay * 0.03} />
+            </p>
+            <p className="mt-1 text-[11px] text-ink-muted/70">Slot encrypted</p>
+          </>
+        ) : (
+          <>
+            <h3 className="font-display text-lg leading-none text-white group-hover:text-blue-bright">
+              {member.name}
+            </h3>
+            <p className="font-arcade mt-1.5 text-[8px] text-blue-bright">
+              {member.role}
+              <span className="text-white/35"> / </span>
+              <span className="text-ink-muted">{member.focus}</span>
+            </p>
+            {member.x && (
+              <p className="font-arcade mt-1 text-[7px] text-ink-muted/80 group-hover:text-blue-bright">
+                VIEW ON X →
+              </p>
+            )}
+          </>
+        )}
+      </div>
+    </div>
+  );
+
+  const shellClass = `arcade-panel group relative overflow-hidden p-4 ${
+    mystery ? "team-mystery" : ""
+  }`;
+
+  if (member.x && !mystery) {
+    return (
+      <a
+        href={member.x}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={`${shellClass} block transition hover:border-blue-bright/50`}
+        style={{ animationDelay: `${delay}ms` }}
+        aria-label={`${member.name} on X`}
+      >
+        {body}
+      </a>
+    );
+  }
 
   return (
-    <article
-      className={`arcade-panel group relative overflow-hidden p-4 ${
-        mystery ? "team-mystery" : ""
-      }`}
-      style={{ animationDelay: `${delay}ms` }}
-    >
-      <div className="flex items-center gap-3.5">
-        <div
-          className={`relative h-16 w-16 shrink-0 overflow-hidden border-2 bg-black/50 ${
-            mystery
-              ? "animate-mystery-glitch border-blue/50"
-              : "border-white/20 group-hover:border-blue-bright/70"
-          }`}
-        >
-          <Image
-            src={member.avatar}
-            alt={mystery ? "Classified operative" : member.name}
-            fill
-            className={`object-cover ${mystery ? "animate-mystery-static" : ""}`}
-            sizes="64px"
-            unoptimized
-          />
-          {mystery && (
-            <div
-              className="pointer-events-none absolute inset-0 bg-[repeating-linear-gradient(0deg,transparent,transparent_2px,rgba(47,143,255,0.12)_2px,rgba(47,143,255,0.12)_4px)]"
-              aria-hidden
-            />
-          )}
-        </div>
-
-        <div className="min-w-0 flex-1">
-          {mystery ? (
-            <>
-              <h3 className="font-display text-lg leading-none text-blue-bright">
-                <ScrambleText length={5} intervalMs={70 + delay * 0.05} />
-              </h3>
-              <p className="font-arcade mt-1.5 text-[8px] text-ink-muted">
-                <ScrambleText length={6} intervalMs={95 + delay * 0.04} />
-                <span className="text-white/30"> / </span>
-                <ScrambleText length={6} intervalMs={110 + delay * 0.03} />
-              </p>
-              <p className="mt-1 text-[11px] text-ink-muted/70">Slot encrypted</p>
-            </>
-          ) : (
-            <>
-              <h3 className="font-display text-lg leading-none text-white group-hover:text-blue-bright">
-                {member.name}
-              </h3>
-              <p className="font-arcade mt-1.5 text-[8px] text-blue-bright">
-                {member.role}
-                <span className="text-white/35"> / </span>
-                <span className="text-ink-muted">{member.focus}</span>
-              </p>
-            </>
-          )}
-        </div>
-      </div>
+    <article className={shellClass} style={{ animationDelay: `${delay}ms` }}>
+      {body}
     </article>
   );
 }

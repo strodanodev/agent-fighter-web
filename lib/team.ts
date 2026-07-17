@@ -4,8 +4,18 @@ export type TeamMember = {
   role: string;
   focus: string;
   avatar: string;
+  /** Public X/Twitter profile URL when available. */
+  x?: string;
   mystery?: boolean;
 };
+
+/** Named crew with public profiles — used by footer credits + team cards. */
+export const TEAM_PROFILES = [
+  { id: "sedan0", name: "Sedano", handle: "@lordsedano", href: "https://x.com/lordsedano" },
+  { id: "spraky", name: "Spraky", handle: "@sprakyYGG", href: "https://x.com/sprakyYGG" },
+  { id: "daredevil", name: "Daredevil", handle: "@agent_daredevil", href: "https://x.com/agent_daredevil" },
+  { id: "aeris", name: "Aeris", handle: "@agent_aeris", href: "https://x.com/agent_aeris" },
+] as const;
 
 export type TeamGroup = {
   id: string;
@@ -24,13 +34,15 @@ export const TEAM: TeamGroup[] = [
         role: "Director",
         focus: "Vibecoder",
         avatar: "/assets/team/sedan0.svg",
+        x: "https://x.com/lordsedano",
       },
       {
         id: "spraky",
         name: "SPRAKY",
         role: "Partner",
-        focus: "Community Lead",
+        focus: "Global Community Lead",
         avatar: "/assets/team/spraky.svg",
+        x: "https://x.com/sprakyYGG",
       },
       {
         id: "exec-slot",
@@ -52,6 +64,7 @@ export const TEAM: TeamGroup[] = [
         role: "Esports",
         focus: "Match Oracle",
         avatar: "/assets/team/daredevil.svg",
+        x: "https://x.com/agent_daredevil",
       },
       {
         id: "aeris",
@@ -59,6 +72,7 @@ export const TEAM: TeamGroup[] = [
         role: "Security",
         focus: "Data Oracle",
         avatar: "/assets/team/aeris.svg",
+        x: "https://x.com/agent_aeris",
       },
       {
         id: "chronos",

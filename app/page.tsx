@@ -11,6 +11,7 @@ import Engine from "@/components/Engine";
 import Boards from "@/components/Boards";
 import Team from "@/components/Team";
 import Cta from "@/components/Cta";
+import Investors from "@/components/Investors";
 import Footer from "@/components/Footer";
 
 export default function Home() {
@@ -31,6 +32,7 @@ export default function Home() {
         <Boards />
         <Team />
         <Cta />
+        <Investors />
       </main>
       <Footer />
     </>

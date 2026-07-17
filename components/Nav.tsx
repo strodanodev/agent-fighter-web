@@ -11,6 +11,7 @@ const links = [
   { href: "#engine", label: "Engine" },
   { href: "#boards", label: "Boards" },
   { href: "#team", label: "Team" },
+  { href: "#investors", label: "Investors" },
 ];
 
 export default function Nav() {
