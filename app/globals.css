@@ -716,3 +716,113 @@ body {
   white-space: nowrap;
   padding: 0.45rem 0;
 }
+
+/* Referral dare page (/dare/<code>) — red-corner rage-bait styling */
+.dare-stroke-red {
+  text-shadow:
+    2px 2px 0 #2a0512,
+    0 0 42px rgba(255, 61, 110, 0.35);
+}
+
+.dare-corner-red {
+  border: 1px solid rgba(255, 61, 110, 0.55);
+  background: linear-gradient(180deg, rgba(10, 21, 36, 0.88), rgba(8, 16, 28, 0.92));
+  box-shadow:
+    0 0 34px rgba(255, 61, 110, 0.14),
+    inset 0 0 44px rgba(255, 61, 110, 0.06);
+}
+
+.dare-corner-blue {
+  border: 1px solid rgba(47, 143, 255, 0.55);
+  background: linear-gradient(180deg, rgba(10, 21, 36, 0.88), rgba(8, 16, 28, 0.92));
+  box-shadow:
+    0 0 34px rgba(47, 143, 255, 0.14),
+    inset 0 0 44px rgba(47, 143, 255, 0.06);
+}
+
+.dare-cta {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #ff8aa8;
+  background: linear-gradient(180deg, #ff5c87, #ff3d6e 45%, #d81b4c);
+  color: #fff;
+  text-shadow: 2px 2px 0 #7e0f2e;
+  transform: skewX(-6deg);
+  box-shadow:
+    0 8px 0 #7e0f2e,
+    0 10px 34px rgba(255, 61, 110, 0.45);
+  transition: transform 0.1s, box-shadow 0.15s, filter 0.15s;
+  animation: dare-pulse 1.5s ease-in-out infinite;
+}
+
+.dare-cta:hover {
+  filter: brightness(1.08);
+  animation: dare-hover-shake 0.28s linear infinite;
+}
+
+.dare-cta:active {
+  transform: skewX(-6deg) translateY(5px);
+  box-shadow:
+    0 3px 0 #7e0f2e,
+    0 6px 20px rgba(255, 61, 110, 0.45);
+}
+
+@keyframes dare-pulse {
+  0%,
+  100% {
+    box-shadow:
+      0 8px 0 #7e0f2e,
+      0 10px 30px rgba(255, 61, 110, 0.35);
+  }
+  50% {
+    box-shadow:
+      0 8px 0 #7e0f2e,
+      0 10px 52px rgba(255, 61, 110, 0.7);
+  }
+}
+
+@keyframes dare-hover-shake {
+  0%,
+  100% {
+    transform: skewX(-6deg) translateX(0);
+  }
+  25% {
+    transform: skewX(-6deg) translateX(-2px) rotate(-0.4deg);
+  }
+  75% {
+    transform: skewX(-6deg) translateX(2px) rotate(0.4deg);
+  }
+}
+
+@keyframes dare-page-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-10px);
+  }
+  40% {
+    transform: translateX(9px);
+  }
+  60% {
+    transform: translateX(-6px);
+  }
+  80% {
+    transform: translateX(4px);
+  }
+}
+
+.dare-shake {
+  animation: dare-page-shake 0.4s linear;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dare-cta,
+  .dare-cta:hover,
+  .dare-shake {
+    animation: none !important;
+  }
+}

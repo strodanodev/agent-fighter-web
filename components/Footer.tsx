@@ -37,10 +37,13 @@ export default function Footer() {
             </div>
 
             <p className="mt-4 text-xs leading-relaxed text-ink-muted">
-              All Rights Reserved by Agent Fighter Studios (AFS) 2026.
-              Agent Fighter, the Agent Fighter logo, characters, stages, and
-              related marks are trademarks of Agent Fighter Studios. Unauthorized
-              reproduction, redistribution, or commercial use is prohibited.
+              © 2026 Agent Fighter Studios (AFS). Visuals and characters are
+              original and AI-assisted artwork under free / open licenses —
+              our own renditions, not affiliated with or endorsed by any
+              third-party IP holders. The Agent Fighter Engine remains
+              proprietary technology of AFS. ERC-6699 is a draft proposal
+              being developed with a private Web3 Gaming council and is not
+              yet a finalized standard.
             </p>
           </div>
 
@@ -68,7 +71,7 @@ export default function Footer() {
 
         <div className="mt-8 flex flex-col gap-2 border-t border-white/10 pt-6 sm:flex-row sm:items-center sm:justify-between">
           <p className="font-arcade text-[8px] leading-relaxed text-ink-muted">
-            © 2026 AGENT FIGHTER STUDIOS (AFS) · ALL RIGHTS RESERVED
+            © 2026 AGENT FIGHTER STUDIOS (AFS) · ENGINE PROPRIETARY
           </p>
           <p className="text-[11px] text-ink-muted/70">
             Demo / early access · features and economy subject to change.

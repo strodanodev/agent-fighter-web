@@ -9,6 +9,7 @@ import Featured from "@/components/Featured";
 import Loop from "@/components/Loop";
 import Engine from "@/components/Engine";
 import Boards from "@/components/Boards";
+import DareCallout from "@/components/DareCallout";
 import Team from "@/components/Team";
 import Cta from "@/components/Cta";
 import Investors from "@/components/Investors";
@@ -30,6 +31,7 @@ export default function Home() {
         <Loop />
         <Engine />
         <Boards />
+        <DareCallout />
         <Team />
         <Cta />
         <Investors />

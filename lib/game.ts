@@ -10,11 +10,14 @@ export function gameHref(opts: {
   screen?: GameScreen;
   mode?: GameMode;
   char?: string;
+  /** Referral dare code — the game stashes it and redeems on first login. */
+  ref?: string;
 } = {}): string {
   const q = new URLSearchParams();
   if (opts.screen) q.set("screen", opts.screen);
   if (opts.mode) q.set("mode", opts.mode);
   if (opts.char) q.set("char", opts.char);
+  if (opts.ref) q.set("ref", opts.ref);
   const qs = q.toString();
   return qs ? `${GAME_URL}/?${qs}` : `${GAME_URL}/`;
 }

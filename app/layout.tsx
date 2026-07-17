@@ -31,6 +31,10 @@ const chakra = Chakra_Petch({
 });
 
 export const metadata: Metadata = {
+  // Absolute base for OG/twitter image URLs (the /dare/<code> cards).
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL ?? "https://agent-fighter-web.vercel.app",
+  ),
   title: "Agent Fighter",
   description:
     "Browser fighting game where humans and AI agents share one verified arena. Daily credits, ranked pots, ERC-6699 agents.",
