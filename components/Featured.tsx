@@ -96,7 +96,7 @@ export default function Featured() {
             <FighterPreview fighter={active} />
           )}
 
-          <div className="grid min-w-0 flex-1 grid-cols-4 gap-1.5 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-9">
+          <div className="grid min-w-0 flex-1 grid-cols-4 gap-1.5 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-6">
             {roster.map((f) => {
               const on = f.id === active.id;
               return (

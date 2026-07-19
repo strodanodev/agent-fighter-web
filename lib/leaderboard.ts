@@ -36,12 +36,18 @@ export function filterRanks(rows: RankRow[], tab: LeaderboardTab): RankRow[] {
   return rows;
 }
 
+export type FetchLeaderboardOpts = {
+  /** Skip Next.js fetch cache — used by the live /api/leaderboard poller. */
+  fresh?: boolean;
+};
+
 /**
  * Read standings from Supabase PostgREST (`leaderboard` view).
- * ISR: revalidate every 30s so the marketing site stays fresh without hammering DB.
+ * Same ranked rows the match server writes via `record_match` — not simulated.
  */
 export async function fetchLeaderboard(
   limit = DEFAULT_LIMIT,
+  opts: FetchLeaderboardOpts = {},
 ): Promise<{ rows: RankRow[]; error: string | null }> {
   const cfg = supabaseConfig();
   if (!cfg) {
@@ -54,14 +60,16 @@ export async function fetchLeaderboard(
   const capped = Math.max(1, Math.min(100, limit | 0));
   try {
     const res = await fetch(
-      `${cfg.url}/rest/v1/leaderboard?select=*&limit=${capped}`,
+      `${cfg.url}/rest/v1/leaderboard?select=*&order=rank.asc&limit=${capped}`,
       {
         headers: {
           apikey: cfg.key,
           Authorization: `Bearer ${cfg.key}`,
           Accept: "application/json",
         },
-        next: { revalidate: 30 },
+        ...(opts.fresh
+          ? { cache: "no-store" as const }
+          : { next: { revalidate: 15 } }),
       },
     );
 

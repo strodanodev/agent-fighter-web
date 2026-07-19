@@ -3,7 +3,6 @@ import Hero from "@/components/Hero";
 import CalcRain from "@/components/CalcRain";
 import CalcStrip from "@/components/CalcStrip";
 import ArcadeMarquee from "@/components/ArcadeMarquee";
-import FightHud from "@/components/FightHud";
 import GameFrame from "@/components/GameFrame";
 import Featured from "@/components/Featured";
 import Loop from "@/components/Loop";
@@ -25,11 +24,10 @@ export default function Home() {
         <Hero />
         <CalcStrip />
         <ArcadeMarquee />
-        <FightHud />
         <GameFrame />
         <Featured />
-        <Loop />
         <Engine />
+        <Loop />
         <Boards />
         <DareCallout />
         <Team />

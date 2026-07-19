@@ -16,6 +16,8 @@
   --neon-yellow-dim: rgba(255, 229, 102, 0.35);
   --neon-red: #ff3d6e;
   --neon-red-dim: rgba(255, 61, 110, 0.35);
+  --neon-green: #39ff14;
+  --neon-green-dim: rgba(57, 255, 20, 0.35);
   --neon-blue: #3b9eff;
   --neon-blue-bright: #6eb6ff;
 
@@ -53,6 +55,7 @@
   --color-blue-bright: var(--blue-bright);
   --color-neon-yellow: var(--neon-yellow);
   --color-neon-red: var(--neon-red);
+  --color-neon-green: var(--neon-green);
   --color-neon-blue: var(--neon-blue);
   --font-display: var(--font-russo);
   --font-arcade: var(--font-press-start);
@@ -147,6 +150,15 @@ body {
 }
 
 @media (max-width: 768px) {
+  .grain,
+  .scanlines {
+    display: none;
+  }
+}
+
+/* iPad landscape is >768px but still touch — drop the decorative overlays
+   that can intercept taps under iOS Safari compositing quirks. */
+@media (pointer: coarse) {
   .grain,
   .scanlines {
     display: none;
@@ -475,7 +487,7 @@ body {
   box-shadow: 0 0 24px rgba(47, 143, 255, 0.08);
 }
 
-/* Multi-neon leaderboard cabinet */
+/* Leaderboard cabinet — blue / white (no red / yellow neon) */
 .lb-panel {
   position: relative;
   overflow: hidden;
@@ -483,16 +495,15 @@ body {
   background:
     linear-gradient(
       135deg,
-      rgba(255, 229, 102, 0.07) 0%,
+      rgba(255, 255, 255, 0.05) 0%,
       transparent 28%,
-      rgba(59, 158, 255, 0.1) 55%,
-      rgba(255, 61, 110, 0.07) 100%
+      rgba(59, 158, 255, 0.12) 55%,
+      rgba(20, 96, 200, 0.08) 100%
     ),
     var(--bg-panel);
   box-shadow:
-    0 0 0 1px rgba(255, 229, 102, 0.08) inset,
-    0 0 28px rgba(59, 158, 255, 0.18),
-    0 0 48px rgba(255, 61, 110, 0.08);
+    0 0 0 1px rgba(59, 158, 255, 0.1) inset,
+    0 0 28px rgba(59, 158, 255, 0.18);
 }
 
 .lb-panel::before {
@@ -503,11 +514,11 @@ body {
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(255, 229, 102, 0.12),
+    rgba(255, 255, 255, 0.06),
     transparent 40%,
-    rgba(59, 158, 255, 0.1),
+    rgba(59, 158, 255, 0.12),
     transparent 70%,
-    rgba(255, 61, 110, 0.12),
+    rgba(110, 182, 255, 0.08),
     transparent
   );
   opacity: 0.55;
@@ -516,19 +527,19 @@ body {
 
 .lb-title-glow {
   text-shadow:
-    0 0 12px rgba(255, 229, 102, 0.45),
-    0 0 28px rgba(59, 158, 255, 0.35),
+    0 0 12px rgba(59, 158, 255, 0.4),
+    0 0 28px rgba(59, 158, 255, 0.25),
     2px 2px 0 #041028;
 }
 
 .lb-glow-yellow {
-  color: var(--neon-yellow);
-  text-shadow: 0 0 10px rgba(255, 229, 102, 0.75), 0 0 22px rgba(255, 229, 102, 0.35);
+  color: var(--neon-blue-bright);
+  text-shadow: 0 0 10px rgba(110, 182, 255, 0.55), 0 0 22px rgba(59, 158, 255, 0.3);
 }
 
 .lb-glow-red {
-  color: var(--neon-red);
-  text-shadow: 0 0 10px rgba(255, 61, 110, 0.75), 0 0 22px rgba(255, 61, 110, 0.35);
+  color: rgba(255, 255, 255, 0.75);
+  text-shadow: 0 0 10px rgba(59, 158, 255, 0.35);
 }
 
 .lb-glow-blue {
@@ -539,11 +550,11 @@ body {
 .lb-row-top {
   background: linear-gradient(
     90deg,
-    rgba(255, 229, 102, 0.12),
-    rgba(59, 158, 255, 0.06),
+    rgba(59, 158, 255, 0.14),
+    rgba(255, 255, 255, 0.04),
     transparent 70%
   );
-  box-shadow: inset 3px 0 0 var(--neon-yellow);
+  box-shadow: inset 3px 0 0 var(--neon-blue-bright);
 }
 
 .lb-row-2 {
@@ -551,23 +562,11 @@ body {
 }
 
 .lb-row-3 {
-  box-shadow: inset 3px 0 0 var(--neon-red);
+  box-shadow: inset 3px 0 0 rgba(255, 255, 255, 0.45);
 }
 
-.lb-tab-yellow[aria-selected="true"] {
-  border-color: var(--neon-yellow);
-  background: rgba(255, 229, 102, 0.14);
-  color: var(--neon-yellow);
-  box-shadow: 0 0 18px rgba(255, 229, 102, 0.35);
-}
-
-.lb-tab-red[aria-selected="true"] {
-  border-color: var(--neon-red);
-  background: rgba(255, 61, 110, 0.14);
-  color: var(--neon-red);
-  box-shadow: 0 0 18px rgba(255, 61, 110, 0.35);
-}
-
+.lb-tab-yellow[aria-selected="true"],
+.lb-tab-red[aria-selected="true"],
 .lb-tab-blue[aria-selected="true"] {
   border-color: var(--neon-blue-bright);
   background: rgba(59, 158, 255, 0.16);
@@ -576,14 +575,12 @@ body {
 }
 
 .lb-prize {
-  border-color: rgba(255, 61, 110, 0.45);
+  border-color: rgba(59, 158, 255, 0.4);
   background:
-    linear-gradient(180deg, rgba(255, 61, 110, 0.12), transparent 45%),
-    linear-gradient(225deg, rgba(255, 229, 102, 0.08), transparent 50%),
+    linear-gradient(180deg, rgba(59, 158, 255, 0.12), transparent 45%),
+    linear-gradient(225deg, rgba(255, 255, 255, 0.04), transparent 50%),
     var(--bg-panel);
-  box-shadow:
-    0 0 28px rgba(255, 61, 110, 0.15),
-    0 0 40px rgba(255, 229, 102, 0.06);
+  box-shadow: 0 0 28px rgba(59, 158, 255, 0.12);
 }
 
 .arcade-panel-static {
@@ -755,6 +752,11 @@ body {
     0 10px 34px rgba(255, 61, 110, 0.45);
   transition: transform 0.1s, box-shadow 0.15s, filter 0.15s;
   animation: dare-pulse 1.5s ease-in-out infinite;
+  /* iOS: skewed anchors need an explicit hit affordance or taps miss. */
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: rgba(255, 61, 110, 0.25);
+  z-index: 1;
 }
 
 .dare-cta:hover {

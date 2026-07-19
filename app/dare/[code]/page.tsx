@@ -78,10 +78,15 @@ export default async function DarePage({
   const rate = stats ? winRate(stats) : null;
   const char = portraitFor(stats);
   const ref = normalizeDareCode(code) ?? undefined;
-  const acceptHref = gameHref({ screen: "title", ref });
+  const sp = await searchParams;
+  // Dare-vs-agent (ADR 0006): ?agent=1 rides the whole chain — sender link →
+  // this page → the game, where the accepter fights the sender's TRAINED
+  // agent instead of waiting on the sender to show up.
+  const vsAgent = sp.agent === "1";
+  const acceptHref = gameHref({ screen: "title", ref, vsAgent });
   // The message on the link opens the page; the stock math-insult is the
   // fallback. Soft attribution only — see the note in generateMetadata.
-  const taunt = normalizeTaunt((await searchParams).t);
+  const taunt = normalizeTaunt(sp.t);
   const openingTaunt = taunt
     ? `The dare came with a message: “${taunt}”`
     : tauntFor(stats);
@@ -96,7 +101,10 @@ export default async function DarePage({
       />
       <div className="scanlines" aria-hidden />
 
-      <div className="relative z-[2] mx-auto flex w-full max-w-5xl flex-1 flex-col items-center px-5 pt-5 pb-9 md:px-8">
+      {/* z-51: above the fixed .grain overlay (z-50). iOS Safari has bitten
+          us with pointer-events:none overlays still eating taps when the
+          interactive tree sits underneath them in the stacking order. */}
+      <div className="relative z-[51] mx-auto flex w-full max-w-5xl flex-1 flex-col items-center px-5 pt-5 pb-9 md:px-8">
         {/* top bar */}
         <div className="mb-4 flex w-full items-center justify-between gap-3 md:mb-8">
           <Link href="/" className="font-display text-sm text-white md:text-base">

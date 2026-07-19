@@ -26,14 +26,14 @@ export default function HeroVideo() {
     return (
       <div
         ref={host}
-        className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_40%,rgba(47,143,255,0.22),transparent_55%)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_30%_40%,rgba(47,143,255,0.22),transparent_55%)]"
         aria-hidden
       />
     );
   }
 
   return (
-    <div ref={host} className="absolute inset-0" aria-hidden>
+    <div ref={host} className="pointer-events-none absolute inset-0" aria-hidden>
       {allow && (
         <video
           ref={videoRef}

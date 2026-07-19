@@ -69,13 +69,21 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-8 flex flex-col gap-2 border-t border-white/10 pt-6 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-8 flex flex-col gap-3 border-t border-white/10 pt-6 sm:flex-row sm:items-center sm:justify-between">
           <p className="font-arcade text-[8px] leading-relaxed text-ink-muted">
             © 2026 AGENT FIGHTER STUDIOS (AFS) · ENGINE PROPRIETARY
           </p>
-          <p className="text-[11px] text-ink-muted/70">
-            Demo / early access · features and economy subject to change.
-          </p>
+          <div className="flex flex-wrap items-center gap-4">
+            <a
+              href="/docs"
+              className="font-arcade text-[8px] text-blue-bright transition hover:text-white"
+            >
+              DOCS WIKI
+            </a>
+            <p className="text-[11px] text-ink-muted/70">
+              Demo / early access · features and economy subject to change.
+            </p>
+          </div>
         </div>
       </div>
     </footer>

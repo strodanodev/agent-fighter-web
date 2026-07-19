@@ -2,10 +2,13 @@
 
 import dynamic from "next/dynamic";
 import Image from "next/image";
+import Link from "next/link";
+import { useCallback, useEffect, useState } from "react";
 import { CoinIcon, JoystickIcon } from "./ArcadeIcons";
 import HeroVideo from "./HeroVideo";
 import { LOGO_SRC } from "@/lib/assets";
 import { MINDS_LOGO_SRC, MINDS_URL, gameHref } from "@/lib/game";
+import type { LiveStats } from "@/lib/live-stats";
 
 const ArenaScene = dynamic(() => import("./ArenaScene"), {
   ssr: false,
@@ -14,7 +17,37 @@ const ArenaScene = dynamic(() => import("./ArenaScene"), {
   ),
 });
 
+const POLL_MS = 15_000;
+
+function formatCount(n: number): string {
+  if (!Number.isFinite(n) || n < 0) return "—";
+  return n.toLocaleString("en-US");
+}
+
 export default function Hero() {
+  const [stats, setStats] = useState<LiveStats | null>(null);
+
+  const refresh = useCallback(async () => {
+    try {
+      const res = await fetch("/api/live-stats", { cache: "no-store" });
+      if (!res.ok) return;
+      const data = (await res.json()) as LiveStats;
+      setStats(data);
+    } catch {
+      /* keep last good readout */
+    }
+  }, []);
+
+  useEffect(() => {
+    void refresh();
+    const id = window.setInterval(() => {
+      void refresh();
+    }, POLL_MS);
+    return () => window.clearInterval(id);
+  }, [refresh]);
+
+  const live = stats?.matchmaking === "live";
+
   return (
     <section
       id="top"
@@ -72,15 +105,41 @@ export default function Hero() {
             </p>
           </a>
 
-          <div className="animate-rise-delay-2 mt-4 calc-readout flex flex-wrap gap-x-4 gap-y-1 border border-blue/30 bg-black/40 px-3 py-2">
+          <div
+            className="animate-rise-delay-2 mt-4 calc-readout flex flex-wrap gap-x-4 gap-y-1 border border-blue/30 bg-black/40 px-3 py-2 [&_strong]:font-normal"
+            aria-live="polite"
+          >
             <span>
-              QUEUE <strong className="text-white">OPEN</strong>
+              MATCHMAKING{" "}
+              <strong
+                className={
+                  live
+                    ? "!text-neon-green"
+                    : stats
+                      ? "!text-neon-red"
+                      : "!text-ink-muted"
+                }
+              >
+                {stats ? (live ? "LIVE" : "OFFLINE") : "—"}
+              </strong>
             </span>
             <span>
-              SIM <strong>60HZ</strong>
+              MATCHES{" "}
+              <strong className="!text-white tabular-nums">
+                {stats ? formatCount(stats.matches) : "—"}
+              </strong>
             </span>
             <span>
-              AUTH <strong className="animate-tick">_</strong>
+              PLAYERS{" "}
+              <strong className="!text-white tabular-nums">
+                {stats ? formatCount(stats.players) : "—"}
+              </strong>
+            </span>
+            <span>
+              AGENTS CONNECTED{" "}
+              <strong className="!text-neon-yellow tabular-nums">
+                {stats ? formatCount(stats.agentsOnline) : "—"}
+              </strong>
             </span>
           </div>
 
@@ -101,6 +160,12 @@ export default function Hero() {
               <JoystickIcon className="h-3.5 w-3.5 text-blue-bright" />
               SELECT
             </a>
+            <Link
+              href="/docs"
+              className="font-arcade inline-flex items-center border border-blue/40 bg-black/40 px-5 py-3 text-[10px] text-blue-bright transition hover:border-blue-bright hover:text-white"
+            >
+              DOCS
+            </Link>
           </div>
         </div>
       </div>
