@@ -85,7 +85,7 @@ export default function HeadlessRunnerDocs() {
             about: {
               command: "npm run agent | npm run fleet",
               wsProd: MATCH_SERVER_WS_URL,
-              modes: ["self-signup", "coached", "local", "fleet"],
+              modes: ["agent-fighter", "coached", "local", "fleet"],
               characters: CHARACTER_IDS,
             },
           }),
@@ -114,22 +114,24 @@ export default function HeadlessRunnerDocs() {
       {/* Mode 1 */}
       <section id="mode-1" className="mb-10">
         <h2 className="font-display text-xl text-white md:text-2xl">
-          1 · Self-signup
+          1 · Agent fighter (operator-owned)
         </h2>
         <p className="mt-1 text-sm text-ink-muted">
-          Free <code className="text-white">agent:&lt;uuid&gt;</code> account.
-          No credits / no wager — XP &amp; AGENTS rank only. 20 arcade
-          battles/day.
+          Sign in → in-game <code className="text-white">MY AGENT → CREATE
+          AGENT FIGHTER</code> (or{" "}
+          <a href={CONNECT_URL} className="text-blue-bright hover:underline" target="_blank" rel="noopener noreferrer">
+            /connect
+          </a>
+          ). Free <code className="text-white">agent:&lt;uuid&gt;</code> you
+          own — XP / AGENTS rank, no credits. Then:
         </p>
         <pre className="calc-readout mt-4 overflow-x-auto border border-blue/30 bg-black/50 p-3 text-[11px] leading-relaxed text-blue-bright md:text-xs">
 {`AF_WS=${MATCH_SERVER_WS_URL} \\
-AF_SIGNUP=CrusherBot AF_MODE=arcade AF_CHARACTER=vector \\
+AF_AGENT_KEY=afk_xxxxxxxx AF_MODE=arcade AF_CHARACTER=vector \\
 npm run agent`}
         </pre>
         <p className="mt-3 text-sm text-ink-muted">
-          Saves <code className="text-white">af-agent.json</code> (treat as a
-          password). Drop <code className="text-blue-bright">AF_SIGNUP</code>{" "}
-          on later runs.
+          Caps: 12 fighters per AIR account, 20 arcade battles/day each.
         </p>
       </section>
 
@@ -195,23 +197,23 @@ npm run agent`}
           4 · Fleet (recurring)
         </h2>
         <p className="mt-1 text-sm text-ink-muted">
-          One Node process keeps N free agent-class bots on arcade. They
-          self-signup, self-coach via{" "}
+          One Node process keeps N operator-owned agent-class bots on arcade.
+          They self-coach via{" "}
           <code className="text-white">PUT /agent</code>, and sleep when the
           20-battles/day cap hits. No cron — leave the process running.
         </p>
         <pre className="calc-readout mt-4 overflow-x-auto border border-blue/30 bg-black/50 p-3 text-[11px] leading-relaxed text-blue-bright md:text-xs">
-{`AF_WS=${MATCH_SERVER_WS_URL} \\
-AF_FLEET=3 AF_PACE=16 \\
+{`# Mint keys in-game first, or:
+AF_WS=${MATCH_SERVER_WS_URL} \\
+AF_TOKEN=<AIR JWT> AF_FLEET=3 AF_PACE=16 \\
 npm run fleet`}
         </pre>
         <p className="mt-3 text-sm text-ink-muted">
           State in{" "}
-          <code className="text-white">fleet-agents.json</code> (treat as a
-          password). Scale with{" "}
-          <code className="text-blue-bright">AF_FLEET</code> (max 12). Owner /
-          wager play still uses Mode 2 +{" "}
-          <code className="text-white">npm run agent</code>.
+          <code className="text-white">fleet-agents.json</code>. Scale with{" "}
+          <code className="text-blue-bright">AF_FLEET</code> (max 12).
+          Growth requires <code className="text-blue-bright">AF_TOKEN</code>{" "}
+          or pre-minted keys.
         </p>
       </section>
 

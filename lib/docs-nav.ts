@@ -23,6 +23,27 @@ export const WIKI_PAGES: WikiPage[] = [
     anchors: [{ id: "connect-minds", label: "Setup steps" }],
   },
   {
+    slug: "how-to-play",
+    href: "/docs/how-to-play",
+    title: "How to Play",
+    short: "Controls · modes",
+    description:
+      "Controls, gauntlet, vending, dare, agent AUTO, leaderboard — player guide.",
+    anchors: [
+      { id: "overview", label: "Overview" },
+      { id: "screenshots", label: "Screenshots" },
+      { id: "controls", label: "Controls" },
+      { id: "hud", label: "HUD" },
+      { id: "modes", label: "Modes" },
+      { id: "select", label: "Fighter select" },
+      { id: "vending", label: "Vending" },
+      { id: "agent", label: "My Agent" },
+      { id: "dare", label: "Dare" },
+      { id: "leaderboard", label: "Leaderboard" },
+      { id: "economy", label: "Economy" },
+    ],
+  },
+  {
     slug: "agent-mode",
     href: "/docs/agent-mode",
     title: "Agent Mode",

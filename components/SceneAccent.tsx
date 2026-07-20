@@ -195,37 +195,243 @@ function FightersDecor() {
   );
 }
 
-/** Spinning credit chips + coin stack for the play loop. */
+/** Additive glow blob — bloom without a postprocessing pass. */
+function GlowOrb({
+  color,
+  scale = 1,
+  opacity = 0.35,
+  position = [0, 0, 0] as [number, number, number],
+}: {
+  color: string;
+  scale?: number;
+  opacity?: number;
+  position?: [number, number, number];
+}) {
+  return (
+    <mesh position={position} scale={scale}>
+      <sphereGeometry args={[1, 16, 16]} />
+      <meshBasicMaterial
+        color={color}
+        transparent
+        opacity={opacity}
+        depthWrite={false}
+        blending={THREE.AdditiveBlending}
+      />
+    </mesh>
+  );
+}
+
+/** Hard-edge hex rim for that on-chain token silhouette. */
+function HexRing({
+  radius,
+  color,
+  opacity = 0.85,
+  rotation = [Math.PI / 2, 0, 0] as [number, number, number],
+}: {
+  radius: number;
+  color: string;
+  opacity?: number;
+  rotation?: [number, number, number];
+}) {
+  const geo = useMemo(() => new THREE.RingGeometry(radius * 0.92, radius, 6), [radius]);
+  useEffect(() => () => geo.dispose(), [geo]);
+  return (
+    <mesh rotation={rotation} geometry={geo}>
+      <meshBasicMaterial
+        color={color}
+        transparent
+        opacity={opacity}
+        side={THREE.DoubleSide}
+        depthWrite={false}
+        blending={THREE.AdditiveBlending}
+      />
+    </mesh>
+  );
+}
+
+/**
+ * Aggressive geometric $TOKEN for the play loop — thick coin, hex cages,
+ * orbiting shards, additive neon bloom. Crypto IYKYK energy.
+ */
 function LoopDecor() {
-  const disc = useMemo(() => new THREE.CylinderGeometry(0.55, 0.55, 0.08, 32), []);
-  const torus = useMemo(() => new THREE.TorusGeometry(0.9, 0.04, 8, 40), []);
+  const coin = useMemo(() => new THREE.CylinderGeometry(0.72, 0.72, 0.14, 48), []);
+  const coinRim = useMemo(() => new THREE.TorusGeometry(0.74, 0.045, 10, 48), []);
+  const hex = useMemo(() => new THREE.CylinderGeometry(0.95, 0.95, 0.04, 6), []);
+  const shard = useMemo(() => new THREE.OctahedronGeometry(0.16, 0), []);
+  const diamond = useMemo(() => new THREE.OctahedronGeometry(0.28, 0), []);
+  // Face stamps lie on the cylinder top (Y+) — thin in Y, drawn in XZ.
+  const markBar = useMemo(() => new THREE.BoxGeometry(0.1, 0.05, 0.42), []);
+  const markCross = useMemo(() => new THREE.BoxGeometry(0.34, 0.05, 0.09), []);
+  const ringA = useMemo(() => new THREE.TorusGeometry(1.05, 0.025, 8, 64), []);
+  const ringB = useMemo(() => new THREE.TorusGeometry(1.2, 0.018, 8, 64), []);
+  const pulse = useRef<THREE.Group>(null);
+  const orbit = useRef<THREE.Group>(null);
+
+  const shards = useMemo(
+    () =>
+      Array.from({ length: 8 }, (_, i) => {
+        const a = (i / 8) * Math.PI * 2;
+        const r = 1.28 + (i % 3) * 0.1;
+        return {
+          pos: [Math.cos(a) * r, Math.sin(a * 1.5) * 0.35, Math.sin(a) * r] as [
+            number,
+            number,
+            number,
+          ],
+          color: i % 3 === 0 ? GOLD : i % 3 === 1 ? WHITE : BLUE_SOFT,
+          scale: 0.65 + (i % 3) * 0.2,
+        };
+      }),
+    [],
+  );
+
+  useFrame((state) => {
+    const t = state.clock.elapsedTime;
+    if (pulse.current) {
+      const s = 1 + Math.sin(t * 2.4) * 0.12;
+      pulse.current.scale.setScalar(s);
+    }
+    if (orbit.current) {
+      orbit.current.rotation.y = t * 0.55;
+      orbit.current.rotation.x = Math.sin(t * 0.4) * 0.15;
+    }
+  });
 
   useEffect(
     () => () => {
-      disc.dispose();
-      torus.dispose();
+      coin.dispose();
+      coinRim.dispose();
+      hex.dispose();
+      shard.dispose();
+      diamond.dispose();
+      markBar.dispose();
+      markCross.dispose();
+      ringA.dispose();
+      ringB.dispose();
     },
-    [disc, torus],
+    [coin, coinRim, hex, shard, diamond, markBar, markCross, ringA, ringB],
   );
 
   return (
-    <group>
-      {[0, 1, 2].map((i) => (
-        <Float key={i} speed={1 + i * 0.2} floatIntensity={0.35}>
-          <Spin axis="x" speed={0.6 + i * 0.15}>
-            <WireShape
-              geometry={disc}
-              color={i === 1 ? GOLD : WHITE}
-              opacity={0.7}
-              position={[i * 0.95 - 0.95, Math.sin(i) * 0.3, i * 0.15]}
-              scale={0.85 + i * 0.08}
-            />
-          </Spin>
-        </Float>
-      ))}
-      <Spin speed={0.5}>
-        <WireShape geometry={torus} color={BLUE} opacity={0.55} />
+    <group scale={0.92}>
+      {/* Atmospheric bloom stack */}
+      <group ref={pulse}>
+        <GlowOrb color={BLUE} scale={1.85} opacity={0.28} />
+        <GlowOrb color={GOLD} scale={1.15} opacity={0.22} />
+        <GlowOrb color={WHITE} scale={0.55} opacity={0.32} />
+      </group>
+
+      {/* Outer hex cages */}
+      <Spin speed={0.35}>
+        <HexRing radius={1.35} color={BLUE} opacity={0.7} />
+        <HexRing radius={1.55} color={WHITE} opacity={0.25} />
       </Spin>
+      <Spin speed={-0.55} axis="z">
+        <group rotation={[Math.PI / 2.4, 0.2, 0]}>
+          <HexRing radius={1.15} color={GOLD} opacity={0.55} />
+        </group>
+      </Spin>
+
+      {/* Main token — thick disc + rim + face mark */}
+      <Float speed={1.4} floatIntensity={0.35} rotationIntensity={0.25}>
+        <Spin axis="y" speed={0.85}>
+          <group rotation={[Math.PI / 2.15, 0, 0.15]}>
+            <WireShape geometry={coin} color={GOLD} opacity={0.9} />
+            <mesh geometry={coin}>
+              <meshBasicMaterial
+                color="#1a1204"
+                transparent
+                opacity={0.55}
+                depthWrite={false}
+              />
+            </mesh>
+            <mesh geometry={coinRim} rotation={[Math.PI / 2, 0, 0]}>
+              <meshBasicMaterial
+                color={GOLD}
+                transparent
+                opacity={0.95}
+                blending={THREE.AdditiveBlending}
+                depthWrite={false}
+              />
+            </mesh>
+            {/* Face stamp — stylized "$" on the coin face */}
+            <group position={[0, 0.1, 0]}>
+              <mesh geometry={markBar}>
+                <meshBasicMaterial
+                  color={WHITE}
+                  transparent
+                  opacity={0.95}
+                  blending={THREE.AdditiveBlending}
+                  depthWrite={false}
+                />
+              </mesh>
+              <mesh geometry={markCross} position={[0, 0, 0.12]}>
+                <meshBasicMaterial color={GOLD} />
+              </mesh>
+              <mesh geometry={markCross} position={[0, 0, -0.12]}>
+                <meshBasicMaterial color={GOLD} />
+              </mesh>
+            </group>
+            <WireShape
+              geometry={hex}
+              color={BLUE_SOFT}
+              opacity={0.65}
+              scale={0.78}
+              position={[0, -0.02, 0]}
+            />
+          </group>
+        </Spin>
+
+        {/* Core crystal punch-through */}
+        <Float speed={2.2} floatIntensity={0.2} rotationIntensity={1.2}>
+          <WireShape
+            geometry={diamond}
+            color={WHITE}
+            opacity={0.95}
+            position={[0, 0, 0.55]}
+            scale={0.7}
+          />
+        </Float>
+      </Float>
+
+      {/* Energy toroids */}
+      <Spin speed={0.7}>
+        <mesh geometry={ringA} rotation={[Math.PI / 2, 0, 0]}>
+          <meshBasicMaterial
+            color={BLUE}
+            transparent
+            opacity={0.85}
+            blending={THREE.AdditiveBlending}
+            depthWrite={false}
+          />
+        </mesh>
+      </Spin>
+      <Spin axis="x" speed={-0.9}>
+        <mesh geometry={ringB}>
+          <meshBasicMaterial
+            color={GOLD}
+            transparent
+            opacity={0.55}
+            blending={THREE.AdditiveBlending}
+            depthWrite={false}
+          />
+        </mesh>
+      </Spin>
+
+      {/* Orbiting shards */}
+      <group ref={orbit}>
+        {shards.map((s, i) => (
+          <Float key={i} speed={1.2 + i * 0.1} floatIntensity={0.4} rotationIntensity={0.9}>
+            <WireShape
+              geometry={shard}
+              color={s.color}
+              position={s.pos}
+              opacity={0.85}
+              scale={s.scale}
+            />
+          </Float>
+        ))}
+      </group>
     </group>
   );
 }
@@ -436,7 +642,7 @@ function VariantRig({ variant }: { variant: SceneVariant }) {
 const CAMERA: Record<SceneVariant, [number, number, number]> = {
   arena: [0, 0.4, 4.2],
   fighters: [0, 0.2, 4.0],
-  loop: [0, 0.3, 3.8],
+  loop: [0, 0.15, 3.4],
   engine: [0, 0.2, 4.0],
   boards: [0, 0.6, 4.2],
   team: [0, 0.2, 4.0],
@@ -512,8 +718,14 @@ export default function SceneAccent({ variant, className = "" }: AccentProps) {
           }}
           style={{ background: "transparent" }}
         >
-          <ambientLight intensity={0.55} />
+          <ambientLight intensity={variant === "loop" ? 0.7 : 0.55} />
           <pointLight position={[3, 4, 2]} intensity={0.8} color="#ffffff" />
+          {variant === "loop" && (
+            <>
+              <pointLight position={[-2, 1.5, 2]} intensity={1.4} color="#2f8fff" />
+              <pointLight position={[1.5, -0.5, 1.5]} intensity={1.1} color="#d9a441" />
+            </>
+          )}
           <VariantRig variant={variant} />
         </Canvas>
       )}
