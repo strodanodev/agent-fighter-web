@@ -13,6 +13,7 @@ import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import SignInButton from "@/components/air/SignInButton";
 import { useAir } from "@/components/air/AirProvider";
+import ReplayModal, { type ReplayTarget } from "./ReplayModal";
 import {
   ActivityBars,
   CharacterMeta,
@@ -167,6 +168,8 @@ export default function DataConsole() {
     player: Player;
     form: Form | null;
   } | null>(null);
+  /** The match whose replay is open, or null. */
+  const [replay, setReplay] = useState<ReplayTarget | null>(null);
 
   const load = useCallback(async () => {
     try {
@@ -471,6 +474,29 @@ export default function DataConsole() {
                   )}
                   <span className="ml-auto">{relTime(m.played_at)}</span>
                 </div>
+                {/*
+                  Only WAGER matches have a stored ledger (ADR 0010) — arcade
+                  and solo are fought against a pinned AI and store none. So the
+                  button is absent rather than present-and-broken: offering a
+                  watch that always 404s is worse than not offering it.
+                */}
+                {m.mode === "wager" && (
+                  <div className="mt-1.5 pl-[18px]">
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setReplay({
+                          matchId: m.id,
+                          label: `${m.players[0]?.name} vs ${m.players[1]?.name}`,
+                          mode: m.mode,
+                        })
+                      }
+                      className="font-arcade border border-blue/40 px-2 py-1 text-[7px] text-blue-bright transition hover:border-blue hover:bg-blue/10"
+                    >
+                      ▶ WATCH REPLAY
+                    </button>
+                  </div>
+                )}
               </li>
             ))}
             {matches.length === 0 && !error && (
@@ -522,6 +548,10 @@ export default function DataConsole() {
           </p>
         )}
       </Panel>
+
+      {replay && (
+        <ReplayModal target={replay} onClose={() => setReplay(null)} />
+      )}
     </div>
   );
 }
