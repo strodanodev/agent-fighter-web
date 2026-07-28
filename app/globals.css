@@ -613,6 +613,30 @@ body {
   box-shadow: 0 1px 0 #0a3a7a;
 }
 
+.arcade-btn-yellow {
+  border-color: #fff6c2;
+  background: linear-gradient(180deg, #ffe566, #f5c518 55%, #c99400);
+  color: #1a1400;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35);
+  box-shadow:
+    0 2px 0 #8a6800,
+    0 0 22px rgba(255, 229, 102, 0.55),
+    0 0 40px rgba(255, 229, 102, 0.25);
+  animation: pulse-glow 2.4s ease-in-out infinite;
+}
+
+.arcade-btn-yellow:hover {
+  filter: brightness(1.12);
+  box-shadow:
+    0 3px 0 #8a6800,
+    0 0 30px rgba(255, 229, 102, 0.75),
+    0 0 52px rgba(255, 229, 102, 0.35);
+}
+
+.arcade-btn-yellow:active {
+  box-shadow: 0 1px 0 #8a6800;
+}
+
 .hud-bar-track {
   position: relative;
   height: 10px;

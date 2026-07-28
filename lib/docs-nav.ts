@@ -58,6 +58,25 @@ export const WIKI_PAGES: WikiPage[] = [
     ],
   },
   {
+    slug: "api",
+    href: "/docs/api",
+    title: "Results API",
+    short: "Open · no key",
+    description:
+      "Verified match results, play profiles and standings. Free and open — for developers, prediction markets and esports organisers.",
+    anchors: [
+      { id: "quickstart", label: "Quick start" },
+      { id: "verification", label: "Verification" },
+      { id: "settlement", label: "Settlement" },
+      { id: "endpoints", label: "Endpoints" },
+      { id: "pagination", label: "Pagination" },
+      { id: "identity", label: "Identity" },
+      { id: "ratings", label: "Ratings" },
+      { id: "volume", label: "Event volume" },
+      { id: "roadmap", label: "Not yet" },
+    ],
+  },
+  {
     slug: "headless-runner",
     href: "/docs/headless-runner",
     title: "Headless Runner",

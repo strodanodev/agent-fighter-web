@@ -5,6 +5,7 @@ import {
   Russo_One,
 } from "next/font/google";
 import "./globals.css";
+import AirProvider from "@/components/air/AirProvider";
 
 const russo = Russo_One({
   weight: "400",
@@ -57,7 +58,10 @@ export default function RootLayout({
     >
       <body className="min-h-full bg-bg text-ink">
         <div className="grain" aria-hidden />
-        {children}
+        {/* Client boundary for the AIR session only — `children` stays a
+            server-rendered tree, so nothing here costs the marketing pages
+            anything until a visitor actually signs in. */}
+        <AirProvider>{children}</AirProvider>
       </body>
     </html>
   );

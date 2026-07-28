@@ -7,13 +7,9 @@ import { CoinIcon } from "./ArcadeIcons";
 import { LOGO_SM_SRC } from "@/lib/assets";
 
 const homeSections = [
-  { id: "arena", label: "Play" },
   { id: "fighters", label: "Fighters" },
-  { id: "play", label: "Modes" },
-  { id: "engine", label: "Engine" },
-  { id: "boards", label: "Boards" },
+  { id: "boards", label: "Leaderboards" },
   { id: "team", label: "Team" },
-  { id: "investors", label: "Investors" },
 ];
 
 export default function Nav() {
@@ -33,7 +29,11 @@ export default function Nav() {
             className="h-8 w-8 object-contain"
             priority
           />
-          <span className="font-display text-base tracking-[0.12em] text-white">
+          {/* The header is a single 56px row, so the wordmark must never wrap.
+              Below `sm` there is not enough width for the mark, the wordmark
+              and every nav item at once — the logo alone carries the brand
+              there, which is what keeps Data/Docs/Agent reachable on a phone. */}
+          <span className="font-display hidden text-base tracking-[0.12em] whitespace-nowrap text-white sm:inline">
             Agent Fighter
           </span>
         </Link>
@@ -56,6 +56,16 @@ export default function Nav() {
             ))}
           </div>
           <Link
+            href="/data"
+            className={`font-arcade text-[8px] transition-colors ${
+              pathname?.startsWith("/data")
+                ? "text-white"
+                : "text-ink-muted hover:text-white"
+            }`}
+          >
+            Data
+          </Link>
+          <Link
             href="/docs"
             className={`font-arcade text-[8px] transition-colors ${
               pathname?.startsWith("/docs")
@@ -65,12 +75,12 @@ export default function Nav() {
           >
             Docs
           </Link>
-          <a
-            href={sectionHref("arena")}
-            className="arcade-btn font-arcade px-3 py-1.5 text-[8px]"
+          <Link
+            href="/docs"
+            className="arcade-btn arcade-btn-yellow font-arcade px-3 py-1.5 text-[8px]"
           >
-            PLAY
-          </a>
+            AGENT
+          </Link>
         </nav>
       </div>
     </header>
