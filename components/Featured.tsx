@@ -10,6 +10,7 @@ import {
   MINDS_LOGO_SRC,
   MINDS_URL,
   SKILL_BAZAAR_URL,
+  STYLE_HINT,
   gameHref,
   isAddAgent,
   portraitSrc,
@@ -49,7 +50,9 @@ export default function Featured() {
       <div className="relative z-[1] mx-auto max-w-6xl px-5 md:px-8">
         <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
           <div>
-            <p className="font-arcade text-[9px] text-blue-bright">ROSTER</p>
+            <p className="font-arcade text-[9px] text-blue-bright">
+              ROSTER · {roster.length} FIGHTERS
+            </p>
             <h2 className="font-display arcade-stroke mt-1 text-2xl text-white md:text-3xl">
               Fighters
             </h2>
@@ -96,7 +99,7 @@ export default function Featured() {
             <FighterPreview fighter={active} />
           )}
 
-          <div className="grid min-w-0 flex-1 grid-cols-4 gap-1.5 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-6">
+          <div className="grid min-w-0 flex-1 grid-cols-4 gap-1.5 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-6 xl:grid-cols-7">
             {roster.map((f) => {
               const on = f.id === active.id;
               return (
@@ -104,6 +107,7 @@ export default function Featured() {
                   key={f.id}
                   type="button"
                   onClick={() => setActive(f)}
+                  title={`${f.name} — ${f.style}`}
                   className={`relative aspect-[3/4] overflow-hidden border-2 bg-black/70 transition ${
                     on
                       ? "border-white shadow-[0_0_14px_rgba(47,143,255,0.45)]"
@@ -163,7 +167,7 @@ export default function Featured() {
 
 function FighterPreview({ fighter }: { fighter: FighterCard }) {
   return (
-    <div className="arcade-panel arcade-panel-static mx-auto flex w-full max-w-[200px] shrink-0 flex-col overflow-hidden sm:mx-0 sm:w-40 sm:max-w-none lg:w-44">
+    <div className="arcade-panel arcade-panel-static mx-auto flex w-full max-w-[220px] shrink-0 flex-col overflow-hidden sm:mx-0 sm:w-48 sm:max-w-none lg:w-56">
       {/* Dedicated portrait stage — contain-fit so variable _select.png
           aspect ratios (≈0.95–2.0) fill the frame without clipping limbs. */}
       <div className="relative aspect-[2/3] w-full bg-[radial-gradient(ellipse_at_50%_75%,rgba(47,143,255,0.18),transparent_65%),#050810]">
@@ -172,18 +176,31 @@ function FighterPreview({ fighter }: { fighter: FighterCard }) {
           alt={fighter.name}
           fill
           className="object-contain object-center p-4"
-          sizes="(max-width:640px) 200px, 176px"
+          sizes="(max-width:640px) 220px, 224px"
           unoptimized
           priority
         />
+        {fighter.featured && (
+          <span className="font-arcade absolute top-1 right-1 bg-blue px-1 py-0.5 text-[5px] text-white shadow-[0_0_8px_rgba(47,143,255,0.8)]">
+            FEATURED
+          </span>
+        )}
       </div>
       <div className="border-t border-white/10 bg-black/90 p-2.5">
-        <p className="font-arcade text-[7px] text-blue-bright">{fighter.tag}</p>
+        <p className="font-arcade text-[7px] text-blue-bright">
+          {fighter.style.toUpperCase()}
+        </p>
         <h3 className="font-display text-lg leading-none text-white">
           {fighter.name}
         </h3>
-        <p className="mt-0.5 line-clamp-2 text-[11px] leading-snug text-ink-muted">
+        <p className="font-arcade mt-1 text-[6px] leading-tight text-ink-muted/80">
+          {STYLE_HINT[fighter.style]}
+        </p>
+        <p className="mt-1.5 line-clamp-3 text-[11px] leading-snug text-ink-muted">
           {fighter.blurb}
+        </p>
+        <p className="mt-1.5 border-l-2 border-blue-bright/50 pl-1.5 text-[10px] leading-snug text-ink-muted/90 italic">
+          &ldquo;{fighter.quote}&rdquo;
         </p>
         <div className="mt-2 flex flex-wrap gap-1.5">
           <a

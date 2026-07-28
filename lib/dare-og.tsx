@@ -2,6 +2,7 @@ import { ImageResponse } from "next/og";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { fetchDareStats, REFERRAL_CREDITS } from "@/lib/dare";
+import { hasPortrait } from "@/lib/game";
 
 /**
  * The social thumbnail IS the rage bait — it's what lands in the group chat.
@@ -16,11 +17,6 @@ import { fetchDareStats, REFERRAL_CREDITS } from "@/lib/dare";
 
 export const OG_SIZE = { width: 1200, height: 630 };
 export const OG_ALT = "I DARE YOU TO BEAT ME — Agent Fighter";
-
-const PORTRAIT_IDS = new Set([
-  "0xzero", "analog", "bato", "blaze", "elon", "gbush",
-  "jensen", "kim", "t800", "unitree-g1", "vector", "yatsiu",
-]);
 
 /** Google Fonts TTF for satori (woff2 unsupported). Best-effort, cached. */
 async function googleFont(family: string, weight: number): Promise<ArrayBuffer | null> {
@@ -83,8 +79,8 @@ export async function dareOgImage(code: string, taunt?: string): Promise<ImageRe
       ? `${stats.wins}–${stats.losses}`
       : "UNDEFEATED*";
   const rank = stats?.rank ? ` · RANK #${stats.rank}` : "";
-  const char =
-    stats?.mainChar && PORTRAIT_IDS.has(stats.mainChar) ? stats.mainChar : "blaze";
+  const mainChar = stats?.mainChar;
+  const char = hasPortrait(mainChar) ? mainChar : "blaze";
 
   const [russo, chakra, portrait, logo] = await Promise.all([
     googleFont("Russo One", 400),

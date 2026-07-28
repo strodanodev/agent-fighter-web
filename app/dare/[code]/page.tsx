@@ -13,18 +13,14 @@ import {
   SITE_URL,
   type DareStats,
 } from "@/lib/dare";
-import { gameHref, portraitSrc } from "@/lib/game";
+import { gameHref, hasPortrait, portraitSrc } from "@/lib/game";
 
 export const revalidate = 60;
 
-/** Character folders that ship a _select.png portrait (public/characters/). */
-const PORTRAIT_IDS = new Set([
-  "0xzero", "analog", "bato", "blaze", "elon", "gbush",
-  "jensen", "kim", "t800", "unitree-g1", "vector", "yatsiu",
-]);
-
-const portraitFor = (stats: DareStats | null): string =>
-  stats?.mainChar && PORTRAIT_IDS.has(stats.mainChar) ? stats.mainChar : "blaze";
+const portraitFor = (stats: DareStats | null): string => {
+  const id = stats?.mainChar;
+  return hasPortrait(id) ? id : "blaze";
+};
 
 export async function generateMetadata({
   params,

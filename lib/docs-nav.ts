@@ -1,3 +1,5 @@
+import { FIGHTER_IDS } from "@/lib/game";
+
 export type WikiAnchor = {
   id: string;
   label: string;
@@ -97,17 +99,9 @@ export function wikiPageByHref(href: string): WikiPage | undefined {
   return WIKI_PAGES.find((p) => p.href === clean);
 }
 
-export const CHARACTER_IDS = [
-  "0xzero",
-  "analog",
-  "bato",
-  "blaze",
-  "elon",
-  "gbush",
-  "jensen",
-  "kim",
-  "t800",
-  "unitree-g1",
-  "vector",
-  "yatsiu",
-] as const;
+/**
+ * Valid `AF_CHARACTER` / `character` values, straight off the roster so the
+ * docs cannot drift from the fighters we actually ship. Alphabetical for docs;
+ * FIGHTERS itself is ordered for the select grid.
+ */
+export const CHARACTER_IDS: readonly string[] = [...FIGHTER_IDS].sort();
