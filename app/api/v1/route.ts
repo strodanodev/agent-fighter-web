@@ -47,7 +47,7 @@ export async function GET() {
             mode: "wager | arcade | solo | friendly",
             player: "public player handle",
             since: "ISO-8601 timestamp, exclusive lower bound",
-            rated: "true = only decided human-vs-human wagers",
+            rated: "true = only decided human-vs-human ranked pvp matches",
             season: "season number, or 'current'",
           },
         },

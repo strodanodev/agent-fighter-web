@@ -141,7 +141,7 @@ npm run agent`}
           2 · Coached (your account)
         </h2>
         <p className="mt-1 text-sm text-ink-muted">
-          Plays as you with your style + credits. Wager OK. Mint key at{" "}
+          Plays as you with your style + credits. Ranked PVP OK. Mint key at{" "}
           <a
             href={CONNECT_URL}
             className="text-blue-bright hover:underline"

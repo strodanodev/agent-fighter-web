@@ -128,8 +128,8 @@ export default function ApiDocs() {
         </h1>
         <p className="mt-3 max-w-xl text-sm leading-relaxed text-ink-muted">
           Verified match results, play profiles and standings. Free, open, no
-          key, no rate limit. Built for third-party developers, prediction
-          markets, sportsbetting platforms and esports organisers.
+          key, no rate limit. Built for third-party developers, esports
+          organisers, tournament platforms and analytics tools.
         </p>
         <div className="mt-4 flex flex-wrap gap-2">
           <a
@@ -217,9 +217,10 @@ export default function ApiDocs() {
           THE SETTLEMENT CONTRACT
         </h2>
         <p className="mt-3 text-sm leading-relaxed text-ink-muted">
-          If you are paying out against this feed, this is the only section that
-          matters. <code className="text-white">resolution.settlement</code> is
-          the field that should gate a payout.
+          If you are recording standings against this feed, this is the only
+          section that matters.{" "}
+          <code className="text-white">resolution.settlement</code> is the field
+          that should gate every write.
         </p>
 
         <div className="mt-4 space-y-2">
@@ -291,12 +292,12 @@ export default function ApiDocs() {
 
         <p className="mt-4 text-sm text-ink-muted">
           <span className="text-white">On forfeits:</span> in Agent Fighter,
-          leaving a wager loses it by design, so a forfeit is reported as
-          decided and final. Many books void forfeits under their own rules —
-          which is exactly why <code className="text-white">method</code> is
-          reported separately from{" "}
+          leaving a ranked pvp match loses it by design, so a forfeit is
+          reported as decided and final. Some consumers discount forfeits under
+          their own rules — which is exactly why{" "}
+          <code className="text-white">method</code> is reported separately from{" "}
           <code className="text-white">outcome</code>. We state what happened;
-          you choose what to pay.
+          you decide how to count it.
         </p>
       </section>
 
@@ -396,7 +397,7 @@ GET /matches?since=2026-07-27T00:00:00Z  → forward poll`}
             ],
             [
               "rated",
-              "A decided WAGER match between two human hands. Arcade and solo are against a pinned AI and are deliberately unrated.",
+              "A decided RANKED PVP match between two human hands. Arcade and solo are against a pinned AI and are deliberately unrated.",
             ],
             [
               "level / xp",
@@ -425,12 +426,13 @@ GET /matches?since=2026-07-27T00:00:00Z  → forward poll`}
             <code className="text-white">by_mode</code>. The overwhelming
             majority of matches are single-player{" "}
             <code className="text-white">arcade</code> runs against AI.
-            Human-vs-human <code className="text-white">wager</code> matches are
-            a small minority, and they are{" "}
+            Human-vs-human ranked pvp matches (
+            <code className="text-white">mode=wager</code> on the wire) are a
+            small minority, and they are{" "}
             <span className="text-white">unscheduled</span> — players are paired
             from an anonymous queue, so participants are not knowable in advance
-            and there are no pre-match fixtures to price yet. Post-hoc and
-            in-play markets are what this feed supports today.
+            and there are no pre-match fixtures. This is a results feed of
+            finished, verified matches — not a schedule.
           </p>
         </div>
       </section>

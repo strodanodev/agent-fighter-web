@@ -2,10 +2,11 @@
  * Response plumbing for the public API: one envelope, one error shape, one
  * place that decides caching and CORS.
  *
- * Every consumer of this API is a machine — a betting platform's ingest job,
- * an esports bracket engine, an AI agent reading /llms.txt. So the contract is
- * boring on purpose: snake_case keys everywhere (matching the database and the
- * conventions of every odds feed), an envelope that never changes shape, and
+ * Every consumer of this API is a machine — an analytics pipeline's ingest
+ * job, an esports bracket engine, an AI agent reading /llms.txt. So the
+ * contract is boring on purpose: snake_case keys everywhere (matching the
+ * database and the conventions of every sports data feed), an envelope that
+ * never changes shape, and
  * errors that are machine-branchable by `code` rather than by parsing prose.
  */
 

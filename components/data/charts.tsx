@@ -16,7 +16,7 @@
  *
  * The site's own neon tokens were tried FIRST and failed: neon-green ↔
  * neon-yellow separate by only ΔE 4.1 under protanopia, i.e. a red-blind
- * reader cannot tell the arcade series from the wager series at all. Neon
+ * reader cannot tell the arcade series from the ranked-pvp series at all. Neon
  * accents stay where they belong — HUD chrome and status — and never encode a
  * data series.
  *
@@ -27,6 +27,8 @@
  */
 
 import { useState } from "react";
+
+import { modeLabel } from "@/lib/modeLabel";
 
 /** Fixed categorical order. Assigned by entity, never by rank or count. */
 export const SERIES_COLORS: Record<string, string> = {
@@ -186,7 +188,7 @@ export function ModeShare({ data }: { data: Record<string, number> }) {
             }}
             onMouseEnter={() => setHover(e.key)}
             onMouseLeave={() => setHover(null)}
-            title={`${e.key}: ${e.value} (${Math.round((e.value / total) * 100)}%)`}
+            title={`${modeLabel(e.key)}: ${e.value} (${Math.round((e.value / total) * 100)}%)`}
           />
         ))}
       </div>
@@ -206,7 +208,7 @@ export function ModeShare({ data }: { data: Record<string, number> }) {
             />
             {/* Text wears ink tokens; the swatch beside it carries identity. */}
             <span className="font-arcade text-[7px] text-white uppercase">
-              {e.key}
+              {modeLabel(e.key)}
             </span>
             <span className="ml-auto font-mono text-ink-muted">
               {e.value.toLocaleString()}

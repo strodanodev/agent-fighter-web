@@ -1,14 +1,14 @@
 /**
  * THE SETTLEMENT CONTRACT — the most important file in the public API.
  *
- * Everything else here is plumbing; this is the part a prediction market or
- * sportsbook actually settles money against. It maps Agent Fighter's internal
- * outcome paths onto three market-meaningful states, and nothing else may
+ * Everything else here is plumbing; this is the part a tournament platform or
+ * standings service actually relies on. It maps Agent Fighter's internal
+ * outcome paths onto three consumer-meaningful states, and nothing else may
  * invent a fourth.
  *
- *   settlement = "final"       the result can never change; settle on it
- *   settlement = "void"        no contest; refund / void the market
- *   settlement = "provisional" not yet re-simulated; DO NOT settle on it
+ *   settlement = "final"       the result can never change; record it
+ *   settlement = "void"        no contest; discard the result
+ *   settlement = "provisional" not yet re-simulated; DO NOT record it
  *
  * WHY "provisional" exists. The match server is authoritative only at
  * SETTLEMENT, when it re-simulates the whole input ledger from tick 0 and
@@ -106,10 +106,10 @@ export function resolve(row: Row): Resolution {
 
   const winner_side = row.winner as 0 | 1;
 
-  // A forfeit is DECIDED and FINAL here — leaving a wager loses it, by design
-  // (ADR 0003/0005). Many books void forfeits by their own house rules, which
-  // is exactly why `method` is reported separately from `outcome`: we state
-  // what happened, they choose what to pay.
+  // A forfeit is DECIDED and FINAL here — leaving a ranked pvp match loses it
+  // by design (ADR 0003/0005). Some consumers discount forfeits under their own
+  // rules, which is exactly why `method` is reported separately from `outcome`:
+  // we state what happened, they decide how to count it.
   if (row.reason === "forfeit") {
     return {
       outcome: "decided",
@@ -136,7 +136,8 @@ export function resolve(row: Row): Resolution {
 /**
  * Whether a match counts toward competitive rating (migration 0021's rule,
  * mirrored for consumers that want the same population the ladder ranks).
- * Rated = a DECIDED WAGER match between two human hands.
+ * Rated = a DECIDED RANKED PVP match (`mode=wager` on the wire) between two
+ * human hands.
  */
 export function isRated(row: {
   mode: string;

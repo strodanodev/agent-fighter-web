@@ -114,7 +114,7 @@ function toPublic(
     rated: isRated(row),
     stakes: {
       entry_fee: fee,
-      // Only a PvP wager builds a two-sided pot; a solo/arcade entry fee is
+      // Only a PvP match has two entries committed; a solo/arcade entry fee is
       // consumed by the house, so reporting fee×2 there would invent money.
       pot: row.mode === "wager" ? fee * 2 : fee,
       currency: "credits",
@@ -174,7 +174,7 @@ export type MatchQuery = {
   player?: string;
   /** ISO timestamp lower bound (exclusive). */
   since?: string;
-  /** Only competitively-rated matches (decided human-vs-human wagers). */
+  /** Only competitively-rated matches (decided human-vs-human ranked pvp). */
   ratedOnly?: boolean;
   season?: number;
 };

@@ -5,7 +5,7 @@
  * the only one that touches the service key. Send an AIR access token as
  * `Authorization: Bearer <token>`.
  *
- * Not every match has one: ledgers are stored for human-vs-human WAGER matches
+ * Not every match has one: ledgers are stored for human-vs-human RANKED PVP matches
  * only (ADR 0010). Arcade and solo are fought against a pinned AI and store
  * nothing, which is why a 404 here says so explicitly rather than looking like
  * a failure.
@@ -66,7 +66,7 @@ export async function GET(
       return apiError(
         "not_found",
         `No replay stored for match "${matchId}".`,
-        "Ledgers are kept for human-vs-human wager matches only — arcade and solo matches are fought against a pinned AI and store none.",
+        "Ledgers are kept for human-vs-human ranked pvp matches only — arcade and solo matches are fought against a pinned AI and store none.",
       );
     }
 

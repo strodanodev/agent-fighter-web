@@ -3,7 +3,7 @@
  * match integrity, and the current season window.
  *
  * Also the honest place to read EVENT VOLUME before building on this feed.
- * `by_mode` tells a would-be market exactly how much human-vs-human material
+ * `by_mode` tells a would-be consumer exactly how much human-vs-human material
  * exists versus single-player arcade traffic, which is a very different number.
  */
 

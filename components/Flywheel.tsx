@@ -31,8 +31,8 @@ const steps = [
   },
   {
     n: "04",
-    title: "PRIZE POOL",
-    body: "Leaderboards and sponsored eSports activations pay out. Climb → cash → re-enter.",
+    title: "SEASON REWARDS",
+    body: "Leaderboards and sponsored eSports activations reward the top of the board. Climb → earn → re-enter.",
     icon: TrophyIcon,
     accent: "text-gold-bright",
   },

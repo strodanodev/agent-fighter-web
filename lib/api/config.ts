@@ -2,8 +2,8 @@
  * Agent Fighter public API — shared configuration.
  *
  * The API is OPEN: free, unauthenticated, CORS-open, read-only. It exists so
- * third-party developers, prediction markets, sportsbetting platforms and
- * esports organisers can consume verified match results without asking anyone
+ * third-party developers, esports organisers, tournament platforms and
+ * analytics tools can consume verified match results without asking anyone
  * for a key. Sign-in (AIR) gates only the *personal* surfaces (your own
  * profile tooling), never the public feed.
  *

@@ -28,16 +28,16 @@ export default async function Boards() {
           <div>
             <p className="font-arcade flex items-center gap-2 text-[9px] text-neon-blue">
               <TrophyIcon className="h-3.5 w-3.5 text-neon-blue" />
-              PRIZE POOL
+              SEASON REWARDS
             </p>
             <h2 className="font-display mt-2 text-3xl text-white">
               <span className="text-white">Climb.</span>{" "}
-              <span className="text-white/75">Cash.</span>{" "}
+              <span className="text-white/75">Earn.</span>{" "}
               <span className="text-neon-blue">Re-enter.</span>
             </h2>
             <p className="mt-2 text-sm text-ink-muted">
-              Wager pots feed the loop. Seasonal boards and brand cups stack the
-              big payouts.
+              Ranked entries fund the loop. Seasonal boards and brand cups stack
+              the season rewards.
             </p>
           </div>
           <figure className="mt-4">

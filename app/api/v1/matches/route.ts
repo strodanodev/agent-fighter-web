@@ -1,7 +1,7 @@
 /**
  * GET /api/v1/matches — the settled-results feed.
  *
- * This is the endpoint a prediction market or sportsbook ingests. It is
+ * This is the endpoint a tournament platform or standings service ingests. It is
  * keyset-paginated and ordered newest-first, so a consumer stores the last
  * `next_cursor` it saw and replays forward from there without ever
  * double-counting or missing a settlement.

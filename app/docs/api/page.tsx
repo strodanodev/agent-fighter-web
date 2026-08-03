@@ -4,7 +4,7 @@ import ApiDocs from "@/components/docs/ApiDocs";
 export const metadata: Metadata = {
   title: "Results API — verified match data | Docs",
   description:
-    "Free, open, unauthenticated API for Agent Fighter match results, play profiles and standings. Deterministic re-simulation, a stated settlement contract, and keyset pagination — built for third-party developers, prediction markets, sportsbetting platforms and esports organisers.",
+    "Free, open, unauthenticated API for Agent Fighter match results, play profiles and standings. Deterministic re-simulation, a stated settlement contract, and keyset pagination — built for third-party developers, esports organisers, tournament platforms and analytics tools.",
   openGraph: {
     title: "Docs — Results API",
     description:

@@ -21,6 +21,7 @@ import {
   StatTile,
   colorFor,
 } from "./charts";
+import { modeLabel } from "@/lib/modeLabel";
 
 const REFRESH_MS = 30_000;
 
@@ -406,8 +407,8 @@ export default function DataConsole() {
               <ModeShare data={stats.by_mode} />
               <p className="mt-3 text-[11px] leading-relaxed text-ink-muted">
                 Arcade is single-player against a pinned AI. Only{" "}
-                <span className="text-white">wager</span> is human vs human —
-                the population that rates.
+                <span className="text-white">ranked pvp</span> is human vs
+                human — the population that rates.
               </p>
             </>
           ) : (
@@ -448,7 +449,7 @@ export default function DataConsole() {
                   <span
                     className="inline-block h-2.5 w-2.5 shrink-0"
                     style={{ background: colorFor(m.mode) }}
-                    title={m.mode}
+                    title={modeLabel(m.mode)}
                     aria-hidden
                   />
                   <span className="min-w-0 flex-1 truncate text-[12px] text-white">
@@ -468,17 +469,19 @@ export default function DataConsole() {
                     <>
                       <span className="opacity-40">·</span>
                       <span className="text-neon-yellow">
-                        {m.stakes.pot} CR pot
+                        {m.stakes.pot} CR entry
                       </span>
                     </>
                   )}
                   <span className="ml-auto">{relTime(m.played_at)}</span>
                 </div>
                 {/*
-                  Only WAGER matches have a stored ledger (ADR 0010) — arcade
-                  and solo are fought against a pinned AI and store none. So the
-                  button is absent rather than present-and-broken: offering a
-                  watch that always 404s is worse than not offering it.
+                  Only RANKED PVP matches have a stored ledger (ADR 0010) —
+                  arcade and solo are fought against a pinned AI and store none.
+                  So the button is absent rather than present-and-broken:
+                  offering a watch that always 404s is worse than not offering
+                  it. (`wager` is the wire value for that mode; see
+                  lib/modeLabel.ts for why it is not renamed.)
                 */}
                 {m.mode === "wager" && (
                   <div className="mt-1.5 pl-[18px]">

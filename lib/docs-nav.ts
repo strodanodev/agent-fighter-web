@@ -65,7 +65,7 @@ export const WIKI_PAGES: WikiPage[] = [
     title: "Results API",
     short: "Open · no key",
     description:
-      "Verified match results, play profiles and standings. Free and open — for developers, prediction markets and esports organisers.",
+      "Verified match results, play profiles and standings. Free and open — for developers, esports organisers and analytics tools.",
     anchors: [
       { id: "quickstart", label: "Quick start" },
       { id: "verification", label: "Verification" },

@@ -49,13 +49,13 @@ Consequences you should encode:
   diverged from the server's re-simulation and they were convicted. That is the
   anti-cheat firing, not a normal loss.
 
-## THE SETTLEMENT CONTRACT — read before settling anything
+## THE SETTLEMENT CONTRACT — read before recording anything
 
-\`resolution.settlement\` is the only field that should gate a payout:
+\`resolution.settlement\` is the only field that should gate a standings write:
 
-- \`final\`       The result can never change. Safe to settle.
-- \`void\`        No contest. Refund / void the market. Nothing was decided.
-- \`provisional\` NOT yet re-simulated. NEVER settle on this. (No row served by
+- \`final\`       The result can never change. Safe to record.
+- \`void\`        No contest. Discard it. Nothing was decided.
+- \`provisional\` NOT yet re-simulated. NEVER record this. (No row served by
                 this API is provisional today; the state exists so a future
                 live feed can never be mistaken for a settled one.)
 
@@ -65,10 +65,10 @@ Consequences you should encode:
 exhaustively on \`method\`. Branch on \`outcome\` and \`settlement\`.
 
 Note on forfeits: a forfeit is reported as \`outcome: decided\`,
-\`method: forfeit\`, \`settlement: final\` — in Agent Fighter, leaving a wager
-loses it by design. Many books void forfeits under their own rules; that is why
-\`method\` is reported separately from \`outcome\`. We state what happened; you
-choose what to pay.
+\`method: forfeit\`, \`settlement: final\` — in Agent Fighter, leaving a ranked
+pvp match loses it by design. Some consumers count forfeits differently under
+their own rules; that is why \`method\` is reported separately from
+\`outcome\`. We state what happened; you decide how to count it.
 
 ## Endpoints
 
@@ -79,7 +79,7 @@ GET /api/v1/matches
   Settled results, newest first, keyset-paginated.
   Params: limit (1-${PAGE_MAX}, default 25), cursor, mode
           (wager|arcade|solo|friendly), player (handle), since (ISO-8601),
-          rated (true = decided human-vs-human wagers only), season (n|current)
+          rated (true = decided human-vs-human ranked pvp only), season (n|current)
   Pagination: store \`pagination.next_cursor\` and pass it back as \`cursor\`.
   The cursor is keyset-based and stable under concurrent writes — you will
   never double-count or skip a settlement. Do NOT construct cursors yourself;
@@ -129,18 +129,19 @@ Two independent tracks, do not conflate them:
   season yet, in which case the stored season numbers belong to an older
   season and should not be presented as current form.
 
-RATED means: a DECIDED WAGER match between two human hands. Arcade and solo
-matches are against a pinned AI and are deliberately unrated. Level and XP
+RATED means: a DECIDED RANKED PVP match (\`mode=wager\` on the wire) between
+two human hands. Arcade and solo matches are against a pinned AI and are
+deliberately unrated. Level and XP
 measure playtime, not skill — do not use them as a rating.
 
-## Event volume — read this before building a market
+## Event volume — read this before building on the feed
 
 Call GET /api/v1/stats and look at \`by_mode\`. The overwhelming majority of
-matches are single-player \`arcade\` runs against AI. Human-vs-human \`wager\`
-matches are a small minority, and they are UNSCHEDULED — players are paired
-from an anonymous queue, so participants are not knowable in advance and there
-are currently no pre-match fixtures to price. Post-hoc and in-play markets are
-what this feed supports today.
+matches are single-player \`arcade\` runs against AI. Human-vs-human ranked pvp
+matches (\`mode=wager\` on the wire) are a small minority, and they are
+UNSCHEDULED — players are paired from an anonymous queue, so participants are
+not knowable in advance and there are no pre-match fixtures. This feed reports
+finished, verified matches; it is a results feed, not a schedule.
 
 ## Rate limits and etiquette
 
@@ -169,9 +170,9 @@ GET ${API_BASE_URL}/matches?rated=true&limit=50&cursor=<next_cursor>
 GET ${API_BASE_URL}/matches?since=2026-07-27T00:00:00Z
 \`\`\`
 
-For each match, settle only when \`resolution.settlement == "final"\`, pay
-\`resolution.winner_side\` (0 or 1, indexing into \`players\`), and treat
-\`"void"\` as a refund.
+For each match, record it only when \`resolution.settlement == "final"\`,
+credit \`resolution.winner_side\` (0 or 1, indexing into \`players\`), and
+discard anything marked \`"void"\`.
 
 ## Not yet available
 

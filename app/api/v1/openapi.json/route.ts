@@ -69,7 +69,7 @@ export async function GET() {
               type: "string",
               format: "date-time",
             }),
-            param("rated", "Only decided human-vs-human wagers", {
+            param("rated", "Only decided human-vs-human ranked pvp matches", {
               type: "boolean",
             }),
             param("season", "Season number, or 'current'"),
@@ -156,7 +156,7 @@ export async function GET() {
         get: {
           summary: "Global aggregates",
           description:
-            "Volume by mode, character meta, daily activity, match integrity, season window. Read `by_mode` before building a market: it reports how much human-vs-human material actually exists.",
+            "Volume by mode, character meta, daily activity, match integrity, season window. Read `by_mode` before building on this feed: it reports how much human-vs-human material actually exists.",
           responses: { "200": { description: "Aggregates" } },
         },
       },
