@@ -76,6 +76,16 @@ export default function Nav() {
             Docs
           </Link>
           <Link
+            href="/profile"
+            className={`font-arcade text-[8px] transition-colors ${
+              pathname?.startsWith("/profile")
+                ? "text-white"
+                : "text-ink-muted hover:text-white"
+            }`}
+          >
+            Profile
+          </Link>
+          <Link
             href="/docs"
             className="arcade-btn arcade-btn-yellow font-arcade px-3 py-1.5 text-[8px]"
           >
